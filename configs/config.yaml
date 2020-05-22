@@ -1,0 +1,75 @@
+###############################################################
+#                   Vega configuration                        #
+###############################################################
+
+# The host and port to listen on
+Addr: 127.0.0.1:8011
+# TLSKey: /var/lib/vega/ssl/key.pem
+# TLSCert: /var/lib/vega/ssl/cert.pem
+
+# Level of verbosity for logs: info, debug, trace
+LogLevel: debug
+## File path where the logs will be written. If not set logs are written to stdout.
+# LogFilePath: /var/log/vega
+
+Maintenance: true
+
+
+# Configuration of database
+#
+# The database connection details
+# database: mysql://vega:pass@127.0.0.1:3306/vega?charset=utf8mb4&parseTime=True&loc=Local
+# database: sqlite3:///var/lib/vega/db.sqlite3
+# database: postgres://vega:pass@localhost:5432/vega
+Database:
+  Driver: mysql
+  DSN: vega:pass@(127.0.0.1:3306)/vega?charset=utf8mb4&parseTime=True&loc=Local
+  TablePrefix: vega_
+  AutoMigrate: true
+  LogMode: true
+  MaxIdleConns: 10
+  MaxOpenConns: 50
+  ConnMaxLifetime: 5
+
+Redis:
+  Host: 127.0.0.1
+  Port: 6379
+  DBIndex: 5
+  Username: vega
+  # This secret can also be set using the env variables VEGA_REDIS_PASSWORD
+  Password:
+  # https://godoc.org/github.com/boj/redistore#NewRediServiceWithDB
+  # NewRediService returns a new RediService. size: maximum number of idle connections.
+  MaxConn: 20
+
+
+# Admission by casbin, store rule in sql db
+Admission:
+  CasbinModel: ./rbac_model.conf
+  TablePrefix:  vega_
+  LogMode: true
+
+
+# Configuration of session cookies
+#
+# The session cookies identify the user once logged in.
+Session:
+  # The name of the session cookie. (default: vega_session).
+  Name: vega_session
+
+  # The secret to encrypt the session data. This is only used with Redis.
+  # This secret can also be set using the env variables VEGA_SESSION_SECRET
+  Secret: insecure_session_secret
+
+  # The time in seconds before the cookie expires and session is reset.
+  Expiration: 86400 # 1 day
+
+  # The inactivity time in seconds before the session is reset.
+  Inactivity: 300 # 5 minutes
+
+  # The domain to protect.
+  # Note: the authenticator must also be in that domain. If empty, the cookie
+  # is restricted to the subdomain of the issuer.
+  Domain: vega.run
+  Secure: false
+  MappingFile: ./configs/sessions.dat

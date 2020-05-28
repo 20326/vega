@@ -37,7 +37,6 @@ type SessionConfig struct {
 	Inactivity  int64 // Inactivity in seconds
 	Domain      string
 	Secure      bool
-	MappingFile string
 }
 
 type Config struct {

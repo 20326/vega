@@ -2,7 +2,7 @@ package user
 
 import (
 	//"github.com/20326/vega/app/handler/common"
-	//"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"net/http"
 	//"strconv"
 	//"strings"
@@ -187,45 +187,45 @@ func RegisterAction(c *gin.Context) {
 //	result.Msg = "Success"
 //	result.Result = data
 //}
-//
-//func LogoutAction(c *gin.Context) {
-//	result := render.NewResult()
-//	defer c.JSON(http.StatusOK, result)
-//
-//	session := session.GetSession(c)
-//	// get user
-//	s := store.FromContext(c)
-//	user := s.Users.Get(session.UID)
-//	if nil == user {
-//		log.Error().Msg("session illegal")
-//		result.Code = pkg.CodeErr
-//		result.Msg = "session illegal"
-//		return
-//	}
-//
-//	// clear user token
-//	user.Token = ""
-//	if err := s.Users.Update(user); nil != err {
-//		log.Error().Err(err).Str("token", user.Token).Msg("update user action")
-//	}
-//
-//	// clear session
-//	defaultSession := sessions.Default(c)
-//	defaultSession.Options(sessions.Options{
-//		Path:   "/",
-//		MaxAge: -1,
-//	})
-//	defaultSession.Clear()
-//	if err := defaultSession.Save(); nil != err {
-//		log.Error().Err(err).Msg("saves session failed")
-//	}
-//
-//	data := map[string]interface{}{}
-//	data["msg"] = "ok"
-//	data["errorMsg"] = ""
-//	data["next"] = "/login"
-//	result.Result = data
-//}
+
+func LogoutAction(c *gin.Context) {
+	result := render.NewResult()
+	defer c.JSON(http.StatusOK, result)
+
+	//session := sessions.Default(c)
+	//// get user
+	//s := store.FromContext(c)
+	//user := s.Users.Get(session.UID)
+	//if nil == user {
+	//	log.Error().Msg("session illegal")
+	//	result.Code = errors.CodeErr
+	//	result.Msg = "session illegal"
+	//	return
+	//}
+
+	// clear user token
+	//user.Token = ""
+	//if err := s.Users.Update(user); nil != err {
+	//	log.Error().Err(err).Str("token", user.Token).Msg("update user action")
+	//}
+
+	// clear session
+	defaultSession := sessions.Default(c)
+	defaultSession.Options(sessions.Options{
+		Path:   "/",
+		MaxAge: -1,
+	})
+	defaultSession.Clear()
+	if err := defaultSession.Save(); nil != err {
+		log.Error().Err(err).Msg("saves session failed")
+	}
+
+	data := map[string]interface{}{}
+	data["msg"] = "ok"
+	data["errorMsg"] = ""
+	data["next"] = "/login"
+	result.Result = data
+}
 
 //func ChangePasswordAction(c *gin.Context) {
 //	result := render.NewResult()

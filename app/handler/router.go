@@ -21,7 +21,7 @@ func NewHandlers(r *gin.Engine) {
 
 		apiGroup.POST("/user/register", user.RegisterAction)
 		//apiGroup.POST("/user/login", api.LoginAction)
-		//apiGroup.POST("/user/logout", user.LogoutAction)
+		apiGroup.POST("/user/logout", user.LogoutAction)
 		//apiGroup.POST("/user/change-password", api.ChangePasswordAction)
 		//apiGroup.POST("/user/forget-password", api.ForgetPasswordAction)
 		//apiGroup.POST("/user/reset-password", api.ResetPasswordAction)

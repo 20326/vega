@@ -6,11 +6,11 @@ import (
 	"github.com/20326/vega/app/config"
 	// "github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/handler"
-	"github.com/20326/vega/app/session"
 	"github.com/20326/vega/app/middleware"
 	"github.com/20326/vega/app/service"
 	"github.com/20326/vega/pkg/graceful"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/sessions"
 	"github.com/phuslu/log"
 )
 
@@ -71,15 +71,8 @@ func StartHttpServer(configPath string, pidFile string) {
 	r.Use(middleware.ServiceMiddleware(service))
 
 	// init session
-	session := session.Legacy(service.Users, &session.Config{
-		Name:        config.Session.Name,
-		Secret:      config.Session.Secret,
-		MappingFile: config.Session.MappingFile,
-		Expiration:  config.Session.Expiration,
-		Inactivity:  config.Session.Inactivity,
-		Secure:      config.Session.Secure,
-	})
-	r.Use(middleware.SessionsMiddleware(session))
+	sessionStore := middleware.NewSessionsStore(config)
+	r.Use(sessions.Sessions("session", sessionStore))
 
 	log.Info().Msgf("Init ctx %+v", service)
 	// use midleware

@@ -1,9 +1,9 @@
 package setting
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
-	"errors"
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"

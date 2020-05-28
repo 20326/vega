@@ -1,6 +1,5 @@
 package middleware
 
-
 import (
 	"fmt"
 	"strconv"
@@ -14,7 +13,7 @@ import (
 	"github.com/phuslu/log"
 )
 
-func NewSessionsStore(config *config.Config)  sessions.Store {
+func NewSessionsStore(config *config.Config) sessions.Store {
 	store, err := redis.NewStoreWithDB(
 		config.Redis.MaxConn,
 		"tcp",
@@ -34,13 +33,14 @@ func NewSessionsStore(config *config.Config)  sessions.Store {
 		// Domain:   conf.Session.Domain,
 		Path:     "/",
 		MaxAge:   int(config.Session.Expiration),
-		Secure:   false,//conf.Session.Secure,//conf.TLSCert != "", // TODO
+		Secure:   false, //conf.Session.Secure,//conf.TLSCert != "", // TODO
 		HttpOnly: true,
 	})
 
 	_ = redis.SetKeyPrefix(store, "session:")
 	return store
 }
+
 //
 //func SessionsMiddleware(sessions model.Session) gin.HandlerFunc {
 //	return func(c *gin.Context) {

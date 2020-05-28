@@ -1,10 +1,10 @@
 package errors
 
 const (
-	CodeOk                = 0    // OK
-	CodeErr               = -1   // general error
-	CodeAuthErr           = -2   // unauthenticated request
-	CodeTokenErr          = -3   // unauthenticated request
+	CodeOk                = 0   // OK
+	CodeErr               = -1  // general error
+	CodeAuthErr           = -2  // unauthenticated request
+	CodeTokenErr          = -3  // unauthenticated request
 	CodeBadRequestErr     = 400 // bad request
 	CodeForbiddenErr      = 403 // forbidden request
 	CodeNotFoundErr       = 404 // not found

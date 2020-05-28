@@ -3,8 +3,8 @@ package user
 import (
 	"net/http"
 	//"strconv"
-	"strings"
 	"errors"
+	"strings"
 	//"time"
 
 	"github.com/20326/vega/app/model"
@@ -64,7 +64,6 @@ func RegisterAction(c *gin.Context) {
 	defer c.JSON(http.StatusOK, result)
 
 	log.Info().Str("atcion", "register").Msg("User SignUp [" + c.Request.URL.String() + "]")
-
 
 	arg := &LoginUser{}
 	if err := c.BindJSON(&arg); nil != err {
@@ -142,7 +141,7 @@ func LoginAction(c *gin.Context) {
 	// user.LoginAt = time.Now()
 
 	// update user action
-	if err := srv.Users.Update(c,user); nil != err {
+	if err := srv.Users.Update(c, user); nil != err {
 		log.Error().Err(err).Str("token", user.Token).Msg("update user action")
 	}
 

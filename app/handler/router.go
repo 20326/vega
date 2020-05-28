@@ -3,8 +3,8 @@ package handler
 import (
 	// "net/http"
 
-	"github.com/20326/vega/app/handler/api/user"
 	"github.com/20326/vega/app/handler/api/setting"
+	"github.com/20326/vega/app/handler/api/user"
 	"github.com/gin-gonic/gin"
 	// "github.com/phuslu/log"
 )

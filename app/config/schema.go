@@ -31,12 +31,12 @@ type AdmissionConfig struct {
 }
 
 type SessionConfig struct {
-	Name        string
-	Secret      string
-	Expiration  int64 // Expiration in seconds
-	Inactivity  int64 // Inactivity in seconds
-	Domain      string
-	Secure      bool
+	Name       string
+	Secret     string
+	Expiration int64 // Expiration in seconds
+	Inactivity int64 // Inactivity in seconds
+	Domain     string
+	Secure     bool
 }
 
 type Config struct {

@@ -25,7 +25,7 @@ type (
 		Update(context.Context, *Setting) error
 
 		// Delete deletes a setting from the datastore.
-		Delete(context.Context,  uint64) error
+		Delete(context.Context, uint64) error
 
 		// Create persists a new setting to the datastore.
 		Create(context.Context, *Setting) error

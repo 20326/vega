@@ -16,10 +16,10 @@ type (
 
 	// Result represents a common-used result struct.
 	Result struct {
-		Code     int         `json:"code"`               // return code
-		Msg      string      `json:"msg"`                // message
+		Code int    `json:"code"` // return code
+		Msg  string `json:"msg"`  // message
 		// ErrorMsg string      `json:"errorMsg,omitempty"` // show message to ui
-		Result   interface{} `json:"result"`             // data object
+		Result interface{} `json:"result"` // data object
 	}
 )
 
@@ -43,11 +43,10 @@ func NewResult() *Result {
 	}
 }
 
-func (r *Result)Error(err error)  {
+func (r *Result) Error(err error) {
 	r.Code = errors.CodeErr
 	r.Msg = err.Error()
 }
-
 
 // ErrorCode writes the json-encoded error message to the response.
 func ErrorCode(w http.ResponseWriter, err error, status int) {

@@ -9,8 +9,8 @@ import (
 	"github.com/20326/vega/app/middleware"
 	"github.com/20326/vega/app/service"
 	"github.com/20326/vega/pkg/graceful"
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/phuslu/log"
 )
 
@@ -59,7 +59,7 @@ import (
 func StartHttpServer(configPath string, pidFile string) {
 	var err error
 
-	config, err := config.LoadConfig(configPath)
+	cfg, err := config.LoadConfig(configPath)
 	if nil != err {
 		log.Fatal().Err(err).Msg("Load config has some errors!")
 	}
@@ -67,14 +67,14 @@ func StartHttpServer(configPath string, pidFile string) {
 	r := gin.Default()
 
 	// init service
-	service := service.NewService(config)
-	r.Use(middleware.ServiceMiddleware(service))
+	srv := service.NewService(cfg)
+	r.Use(middleware.ServiceMiddleware(srv))
 
 	// init session
-	sessionStore := middleware.NewSessionsStore(config)
+	sessionStore := middleware.NewSessionsStore(cfg)
 	r.Use(sessions.Sessions("session", sessionStore))
 
-	log.Info().Msgf("Init ctx %+v", service)
+	log.Info().Msgf("Init ctx %+v", srv)
 	// use midleware
 
 	//init handler
@@ -89,7 +89,7 @@ func StartHttpServer(configPath string, pidFile string) {
 
 	server := &http.Server{
 		// Set timeouts, etc.
-		Addr:    config.Addr,
+		Addr:    cfg.Addr,
 		Handler: r,
 	}
 	graceful.StartGracefulServer(server, pidFile)

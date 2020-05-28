@@ -8,12 +8,9 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"    // mysql
 	_ "github.com/jinzhu/gorm/dialects/postgres" // postgres
 	_ "github.com/jinzhu/gorm/dialects/sqlite"   // sqlite
-
 )
 
-type (
-
-)
+type ()
 
 // New db connect to a database
 func NewDB(config Config) (*gorm.DB, error) {

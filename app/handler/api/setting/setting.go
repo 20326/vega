@@ -3,12 +3,11 @@ package setting
 import (
 	"net/http"
 	"strconv"
+	"errors"
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
-	"github.com/20326/vega/pkg/errors"
 	"github.com/20326/vega/pkg/render"
-	// "github.com/phuslu/log"
 	"github.com/gin-gonic/gin"
 )
 
@@ -43,15 +42,15 @@ func GetSettingAction(c *gin.Context) {
 	idArg := c.Param("id")
 	id, err := strconv.ParseUint(idArg, 10, 64)
 	if nil != err {
-		result.Code = errors.CodeErr
+		result.Error(err)
 
 		return
 	}
 
-	s := service.FromContext(c)
-	data, _ := s.Settings.Find(c, id)
+	srv := service.FromContext(c)
+	data, err := srv.Settings.Find(c, id)
 	if nil == data {
-		result.Code = errors.CodeErr
+		result.Error(err)
 
 		return
 	}
@@ -67,16 +66,15 @@ func DeleteSettingAction(c *gin.Context) {
 	idArg := c.Param("id")
 	id, err := strconv.ParseUint(idArg, 10, 64)
 	if nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = err.Error()
+		result.Error(err)
 
 		return
 	}
 
-	s := service.FromContext(c)
-	if err := s.Settings.Delete(c, id); nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = err.Error()
+	srv := service.FromContext(c)
+	if err := srv.Settings.Delete(c, id); nil != err {
+		result.Error(err)
+
 	}
 }
 
@@ -88,24 +86,21 @@ func UpdateSettingAction(c *gin.Context) {
 	idArg := c.Param("id")
 	id, err := strconv.ParseUint(idArg, 10, 64)
 	if nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = err.Error()
+		result.Error(err)
 
 		return
 	}
 
 	setting := &model.Setting{Model: model.Model{ID: uint64(id)}}
 	if err := c.BindJSON(setting); nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = "parses update setting request failed"
+		result.Error(errors.New("parses update setting request failed"))
 
 		return
 	}
 
-	s := service.FromContext(c)
-	if err := s.Settings.Update(c, setting); nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = err.Error()
+	srv := service.FromContext(c)
+	if err := srv.Settings.Update(c, setting); nil != err {
+		result.Error(err)
 	}
 }
 
@@ -116,15 +111,13 @@ func AddSettingAction(c *gin.Context) {
 
 	setting := &model.Setting{}
 	if err := c.BindJSON(setting); nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = "parses add setting request failed"
+		result.Error(err)
 
 		return
 	}
 
-	s := service.FromContext(c)
-	if err := s.Settings.Create(c, setting); nil != err {
-		result.Code = errors.CodeErr
-		result.Msg = err.Error()
+	srv := service.FromContext(c)
+	if err := srv.Settings.Create(c, setting); nil != err {
+		result.Error(err)
 	}
 }

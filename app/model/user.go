@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	passwordLen     = 6
+	passwordLen     = 5
 	errUsernameLen  = errors.New("invalid username length")
 	errUsernameChar = errors.New("invalid character in username")
 	errPasswordLen  = errors.New("invalid password length")
@@ -25,7 +25,7 @@ type (
 		Avatar   string     `gorm:"size:255" json:"avatar"`
 		BIO      string     `gorm:"size:512" json:"bio"`
 		Locale   string     `gorm:"size:32" json:"locale"`
-		Password string     `gorm:"size:64" json:"-,omitempty"`
+		Password string     `gorm:"size:64" json:"password,omitempty"`
 		Email    string     `gorm:"size:64" json:"email"`
 		Phone    string     `gorm:"size:16" json:"phone"`
 		Status   int        `gorm:"default:1" json:"status"`

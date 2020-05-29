@@ -3,7 +3,7 @@
 ###############################################################
 
 # The host and port to listen on
-Addr: 127.0.0.1:8011
+Addr: 127.0.0.1:8010
 # TLSKey: /var/lib/vega/ssl/key.pem
 # TLSCert: /var/lib/vega/ssl/cert.pem
 

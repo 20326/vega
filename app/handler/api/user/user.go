@@ -43,13 +43,12 @@ func RegisterAction(c *gin.Context) {
 	user := &model.User{}
 	if err = c.BindJSON(&user); nil != err {
 		result.Error(err)
-
 		return
 	}
+
 	if err = user.Validate(); nil != err {
 		//password and username
 		result.Error(err)
-
 		return
 	}
 
@@ -149,7 +148,7 @@ func LoginAction(c *gin.Context) {
 
 	data := map[string]interface{}{}
 	data["next"] = referer
-	// data["token"] = user.Token
+	data["token"] = user.Token
 
 	result.Msg = "success"
 	result.Result = data

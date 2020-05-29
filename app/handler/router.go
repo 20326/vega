@@ -18,7 +18,6 @@ func NewHandlers(r *gin.Engine) {
 	apiGroup := r.Group("/api")
 	{
 		// user action login/logout
-		apiGroup.GET("/user/auth/test-code", user.TestAction)
 		apiGroup.POST("/user/auth/2step-code", user.Step2CodeAction)
 		apiGroup.POST("/user/register", user.RegisterAction)
 		apiGroup.POST("/user/login", user.LoginAction)

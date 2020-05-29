@@ -18,44 +18,15 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type LoginUser struct {
-	ID       uint64 `json:"id"`
-	Name     string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Phone    string `json:"phone"`
-}
-
-func TestAction(c *gin.Context) {
-	result := render.NewResult()
-	defer c.JSON(http.StatusOK, result)
-
-	// clear session
-
-	data := map[string]interface{}{}
-	data["stepCode"] = 0
-	result.Result = data
-	print(result)
-
-}
 
 func Step2CodeAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
-	srv := service.FromContext(c)
-	user, err := srv.Users.Find(c, 1)
-	if nil == user {
-		log.Warn().Err(err).Msg("can not get user by id")
-		result.Error(err)
-
-		return
+	// TODO
+	result.Result = map[string]interface{}{
+		"stepCode": 0,
 	}
-	// clear session
-
-	data := map[string]interface{}{}
-	data["stepCode"] = 0
-	result.Result = data
 	print(result)
 }
 
@@ -65,17 +36,17 @@ func RegisterAction(c *gin.Context) {
 
 	log.Info().Str("atcion", "register").Msg("User SignUp [" + c.Request.URL.String() + "]")
 
-	arg := &LoginUser{}
+	arg := &model.User{}
 	if err := c.BindJSON(&arg); nil != err {
 		result.Error(err)
 
 		return
 	}
-	if "" == arg.Name {
-		arg.Name = arg.Phone
+	if "" == arg.Username {
+		arg.Username = arg.Phone
 	}
 
-	userName := arg.Name
+	userName := arg.Username
 	password := arg.Password
 
 	data := map[string]interface{}{}

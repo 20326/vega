@@ -33,7 +33,7 @@ func NewSessionsStore(config *config.Config) sessions.Store {
 		HttpOnly: true,
 	})
 
-	_ = redis.SetKeyPrefix(store, "session:")
+	_ = redis.SetKeyPrefix(store, config.Session.KeyPrefix + ":")
 	return store
 }
 

@@ -75,4 +75,4 @@ Session:
   # is restricted to the subdomain of the issuer.
   Domain: vega.run
   Secure: false
-  MappingFile: ./configs/sessions.dat
+  KeyPrefix: session

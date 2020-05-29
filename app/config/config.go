@@ -2,15 +2,15 @@ package config
 
 import (
 	"errors"
+	"github.com/sirupsen/logrus"
 	"os"
 	"strings"
 
-	"github.com/phuslu/log"
 	"github.com/spf13/viper"
 )
 
 // Read a YAML configuration and create a Config object out of it.
-func LoadConfig(configPath string) (*Config, error) {
+func LoadConfig(configPath string, log *logrus.Logger) (*Config, error) {
 	viper.SetEnvPrefix("VEGA")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
@@ -34,27 +34,34 @@ func LoadConfig(configPath string) (*Config, error) {
 		}
 	}
 
-	var conf Config
-	_ = viper.Unmarshal(&conf)
+	var cfg Config
+	_ = viper.Unmarshal(&cfg)
 
 	// set log level
-	switch conf.LogLevel {
+	switch cfg.LogLevel {
 	case "debug":
-		log.DefaultLogger.SetLevel(log.DebugLevel)
+		log.SetLevel(logrus.DebugLevel)
 		break
 	case "info":
-		log.DefaultLogger.SetLevel(log.InfoLevel)
+		log.SetLevel(logrus.InfoLevel)
 		break
-
 	case "warn":
-		log.DefaultLogger.SetLevel(log.WarnLevel)
+		log.SetLevel(logrus.WarnLevel)
 	}
 
 	env := os.Getenv("ENVIRONMENT")
-	if env == "dev" {
-		log.Info().Msg("===> Vega is running in development mode. <===")
+	if env == "production" {
+		log.SetFormatter(&logrus.JSONFormatter{})
+	} else if env == "dev" {
+		log.SetFormatter(&logrus.JSONFormatter{})
+	} else {
+		log.SetFormatter(&logrus.JSONFormatter{})
+		// The TextFormatter is default, you don't actually have to do this.
+		// log.SetFormatter(&logrus.TextFormatter{})
 	}
-	log.Error().Str("ENVIRONMENT", env).Msgf("Vega config: %+v", &conf)
+	log.WithFields(logrus.Fields{
+		"config": cfg,
+	}).Info("===> Vega is running in development mode. <===")
 
-	return &conf, nil
+	return &cfg, nil
 }

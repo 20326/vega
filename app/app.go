@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/20326/vega/app/config"
-	// "github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/handler"
 	"github.com/20326/vega/app/middleware"
 	"github.com/20326/vega/app/service"
 	"github.com/20326/vega/pkg/graceful"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/phuslu/log"
+	"github.com/sirupsen/logrus"
 )
 
 //var (
@@ -55,13 +55,15 @@ import (
 //		//Users:      users,
 //	}
 //}
+var log = logrus.New()
 
 func StartHttpServer(configPath string, pidFile string) {
 	var err error
 
-	cfg, err := config.LoadConfig(configPath)
+	cfg, err := config.LoadConfig(configPath, log)
+	log.SetFormatter(&logrus.JSONFormatter{})
 	if nil != err {
-		log.Fatal().Err(err).Msg("Load config has some errors!")
+		log.WithError(err).Fatal("Load config has some errors!")
 	}
 
 	r := gin.Default()
@@ -74,18 +76,24 @@ func StartHttpServer(configPath string, pidFile string) {
 	sessionStore := middleware.NewSessionsStore(cfg)
 	r.Use(sessions.Sessions("session", sessionStore))
 
-	log.Info().Msgf("Init ctx %+v", srv)
-	// use midleware
+	r.Use(middleware.LoggerWithRequestID(log))
+	log.WithFields(logrus.Fields{
+		"config": cfg,
+	}).Info("init service")
+	// use middleware
 
 	//init handler
 	handler.NewHandlers(r)
 
 	//app, err := InitializeApplication(AppConfig)
 	if nil != err {
-		log.Fatal().Err(err).Msg("Init application has some errors!")
+		log.WithFields(logrus.Fields{
+			"service": srv,
+		}).Info("init service")
+		log.WithError(err).Fatal("Init application has some errors!")
 	}
 
-	log.Info().Msg("Init application ok")
+	log.Info("Init application ok")
 
 	server := &http.Server{
 		// Set timeouts, etc.

@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ServiceMiddleware(svr *service.Service) gin.HandlerFunc {
+func ServiceMiddleware(srv *service.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		svr.WithContext(c)
+		srv.WithContext(c)
 		c.Next()
 	}
 }

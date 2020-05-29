@@ -52,7 +52,7 @@ func AutoMigrateDB(db *gorm.DB) error {
 		new(model.Setting),
 		new(model.Action),
 		new(model.Resource),
-		new(model.Perm),
+		new(model.Permission),
 		new(model.Role),
 		new(model.User),
 	).Error

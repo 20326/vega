@@ -5,7 +5,7 @@ import (
 )
 
 type (
-	// Perm represents an auth request of the system.
+	// Permission represents an auth request of the system.
 	// Resource
 	Resource struct {
 		Model

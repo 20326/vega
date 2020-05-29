@@ -4,7 +4,7 @@ import "context"
 
 type (
 	// permission.
-	Perm struct {
+	Permission struct {
 		Model
 
 		Name         string   `gorm:"size:256" json:"name"`
@@ -18,21 +18,21 @@ type (
 		Deleted      int      `gorm:"default:0" json:"deleted"`
 	}
 
-	// PermService defines operations for working with system permissions.
-	PermService interface {
+	// PermissionService defines operations for working with system permissions.
+	PermissionService interface {
 		// Find returns a permission from the datastore.
-		Find(context.Context, uint64) (*Perm, error)
+		Find(context.Context, uint64) (*Permission, error)
 
 		// List returns a list of permissions from the datastore.
-		List(context.Context) ([]*Perm, error)
+		List(context.Context) ([]*Permission, error)
 
 		// Update persists a permission to the datastore.
-		Update(context.Context, *Perm) error
+		Update(context.Context, *Permission) error
 
 		// Delete deletes a permission from the datastore.
-		Delete(context.Context, *Perm) error
+		Delete(context.Context, uint64) error
 
 		// Create persists a new permission to the datastore.
-		Create(context.Context, *Perm) error
+		Create(context.Context, *Permission) error
 	}
 )

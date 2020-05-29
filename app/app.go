@@ -26,7 +26,7 @@ import (
 //	//Actions    model.ActionService
 //	//Admissions model.AdmissionService
 //	//Resources  model.ResourceService
-//	//Perms      model.PermService
+//	//Permissions      model.PermissionService
 //	//Roles      model.RoleService
 //	//Users      model.UserService
 //}
@@ -39,7 +39,7 @@ import (
 //	//actions model.ActionService,
 //	//admissions model.AdmissionService,
 //	//resources model.ResourceService,
-//	//perms model.PermService,
+//	//perms model.PermissionService,
 //	//roles model.RoleService,
 //	//users model.UserService,
 //) Application {
@@ -50,7 +50,7 @@ import (
 //		//Actions:    actions,
 //		//Admissions: admissions,
 //		//Resources:  resources,
-//		//Perms:      perms,
+//		//Permissions:      perms,
 //		//Roles:      roles,
 //		//Users:      users,
 //	}

@@ -8,10 +8,10 @@ type (
 	Role struct {
 		Model
 
-		Name     string `gorm:"size:256" json:"name"`
-		Describe string `gorm:"size:256" json:"describe"`
-		Deleted  int    `gorm:"default:0" json:"deleted"`
-		Perms    []Perm `json:"perms"`
+		Name        string       `gorm:"size:256" json:"name"`
+		Describe    string       `gorm:"size:256" json:"describe"`
+		Deleted     int          `gorm:"default:0" json:"deleted"`
+		Permissions []Permission `json:"perms"`
 	}
 
 	// RoleService defines operations for working with system roles.

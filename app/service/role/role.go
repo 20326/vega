@@ -81,14 +81,14 @@ func (s *roleService) Update(ctx context.Context, role *model.Role) error {
 }
 
 // Delete deletes a role from the datastore.
-func (s *roleService) Delete(ctx context.Context, role *model.Role) error {
+func (s *roleService) Delete(ctx context.Context, id uint64) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	out := &model.Role{}
 
 	tx := s.db.Begin()
-	if err := s.db.Where("`id` = ?", role.ID).First(out).Error; nil != err {
+	if err := s.db.Where("`id` = ?", id).First(out).Error; nil != err {
 		tx.Rollback()
 
 		return err

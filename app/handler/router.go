@@ -3,6 +3,9 @@ package handler
 import (
 	// "net/http"
 
+	"github.com/20326/vega/app/handler/api/action"
+	"github.com/20326/vega/app/handler/api/permission"
+	"github.com/20326/vega/app/handler/api/role"
 	"github.com/20326/vega/app/handler/api/setting"
 	"github.com/20326/vega/app/handler/api/user"
 	"github.com/gin-gonic/gin"
@@ -30,6 +33,25 @@ func NewHandlers(r *gin.Engine) {
 		// apiGroup.POST("/settings", setting.UpdateSettingsAction)
 		apiGroup.PUT("/settings/:id", setting.UpdateSettingAction)
 		apiGroup.DELETE("/settings/:id", setting.DeleteSettingAction)
+
+		// action admin
+		apiGroup.GET("/actions", action.GetActionsAction)
+		apiGroup.POST("/actions", action.AddActionAction)
+		apiGroup.GET("/actions/:id", action.GetActionAction)
+		apiGroup.PUT("/actions/:id", action.UpdateActionAction)
+		apiGroup.DELETE("/actions/:id", action.DeleteActionAction)
+		// role admin
+		apiGroup.GET("/roles", role.GetRolesAction)
+		apiGroup.POST("/roles", role.AddRoleAction)
+		apiGroup.GET("/roles/:id", role.GetRoleAction)
+		apiGroup.PUT("/roles/:id", role.UpdateRoleAction)
+		apiGroup.DELETE("/roles/:id", role.DeleteRoleAction)
+		// permission admin
+		apiGroup.GET("/permissions", permission.GetPermissionissionsAction)
+		apiGroup.POST("/permissions", permission.AddPermissionissionAction)
+		apiGroup.GET("/permissions/:id", permission.GetPermissionissionAction)
+		apiGroup.PUT("/permissions/:id", permission.UpdatePermissionissionAction)
+		apiGroup.DELETE("/permissions/:id", permission.DeletePermissionissionAction)
 	}
 
 	// console
@@ -48,11 +70,11 @@ func NewHandlers(r *gin.Engine) {
 	//	consoleGroup.PUT("/roles/:id", console.UpdateRoleAction)
 	//	consoleGroup.DELETE("/roles/:id", console.DeleteRoleAction)
 	//	// permission admin
-	//	consoleGroup.GET("/permissions", console.GetPermissionsAction)
-	//	consoleGroup.POST("/permissions", console.AddPermissionAction)
-	//	consoleGroup.GET("/permissions/:id", console.GetPermissionAction)
-	//	consoleGroup.PUT("/permissions/:id", console.UpdatePermissionAction)
-	//	consoleGroup.DELETE("/permissions/:id", console.DeletePermissionAction)
+	//	consoleGroup.GET("/permissions", console.GetPermissionissionsAction)
+	//	consoleGroup.POST("/permissions", console.AddPermissionissionAction)
+	//	consoleGroup.GET("/permissions/:id", console.GetPermissionissionAction)
+	//	consoleGroup.PUT("/permissions/:id", console.UpdatePermissionissionAction)
+	//	consoleGroup.DELETE("/permissions/:id", console.DeletePermissionissionAction)
 	//	// setting admin
 	//	consoleGroup.GET("/settings", console.GetSettingsAction)
 	//	consoleGroup.GET("/settings/:category", console.GetSettingsAction)
@@ -88,19 +110,19 @@ func NewHandlers(r *gin.Engine) {
 	//		// test begin
 	//		log.Info().Msgf("users: %v", service.User.GetUsers())
 	//
-	//		hasPerm, err := service.Casbin.CheckPermission("admin", "/data", "read")
-	//		log.Info().Err(err).Msgf("admin perm: /data read %v", hasPerm)
-	//		hasPerm, err = service.Casbin.CheckPermission("admin", "/book/121", "view")
-	//		log.Info().Err(err).Msgf("admin perm: /book/121 view %v", hasPerm)
-	//		hasPerm, err = service.Casbin.CheckPermission("admin", "/book/121", "read")
-	//		log.Info().Err(err).Msgf("admin perm: /book/121 read %v", hasPerm)
+	//		hasPermission, err := service.Casbin.CheckPermissionission("admin", "/data", "read")
+	//		log.Info().Err(err).Msgf("admin perm: /data read %v", hasPermission)
+	//		hasPermission, err = service.Casbin.CheckPermissionission("admin", "/book/121", "view")
+	//		log.Info().Err(err).Msgf("admin perm: /book/121 view %v", hasPermission)
+	//		hasPermission, err = service.Casbin.CheckPermissionission("admin", "/book/121", "read")
+	//		log.Info().Err(err).Msgf("admin perm: /book/121 read %v", hasPermission)
 	//
-	//		hasPerm, err = service.Casbin.CheckPermission("test", "/book/121", "read")
-	//		log.Info().Err(err).Msgf("test perm: /book/121 read %v", hasPerm)
-	//		hasPerm, err = service.Casbin.CheckPermission("test", "/book/121", "view")
-	//		log.Info().Err(err).Msgf("test perm: /book/121 view %v", hasPerm)
-	//		hasPerm, err = service.Casbin.CheckPermission("test", "/data", "read")
-	//		log.Info().Err(err).Msgf("test perm: /data read %v", hasPerm)
+	//		hasPermission, err = service.Casbin.CheckPermissionission("test", "/book/121", "read")
+	//		log.Info().Err(err).Msgf("test perm: /book/121 read %v", hasPermission)
+	//		hasPermission, err = service.Casbin.CheckPermissionission("test", "/book/121", "view")
+	//		log.Info().Err(err).Msgf("test perm: /book/121 view %v", hasPermission)
+	//		hasPermission, err = service.Casbin.CheckPermissionission("test", "/data", "read")
+	//		log.Info().Err(err).Msgf("test perm: /data read %v", hasPermission)
 	//
 	//		c.String(http.StatusOK, "Welcome Gin Http Server")
 	//	})

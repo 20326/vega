@@ -24,6 +24,9 @@ type (
 		Update(context.Context, *Action) error
 
 		// Delete deletes a action from the datastore.
-		Delete(context.Context, *Action) error
+		Delete(context.Context, uint64) error
+
+		// Create persists a new action to the datastore.
+		Create(context.Context, *Action) error
 	}
 )

@@ -81,14 +81,14 @@ func (s *actionService) Update(ctx context.Context, action *model.Action) error 
 }
 
 // Delete deletes a action from the datastore.
-func (s *actionService) Delete(ctx context.Context, action *model.Action) error {
+func (s *actionService) Delete(ctx context.Context, id uint64) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	out := &model.Action{}
 
 	tx := s.db.Begin()
-	if err := s.db.Where("`id` = ?", action.ID).First(out).Error; nil != err {
+	if err := s.db.Where("`id` = ?", id).First(out).Error; nil != err {
 		tx.Rollback()
 
 		return err

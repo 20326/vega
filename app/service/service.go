@@ -1,13 +1,13 @@
 package service
 
 import (
+	"github.com/20326/vega/app/service/permission"
 	"log"
 
 	"github.com/20326/vega/app/config"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service/action"
 	"github.com/20326/vega/app/service/admission"
-	"github.com/20326/vega/app/service/perm"
 	"github.com/20326/vega/app/service/resource"
 	"github.com/20326/vega/app/service/role"
 	"github.com/20326/vega/app/service/setting"
@@ -23,13 +23,13 @@ const (
 
 type (
 	Service struct {
-		Actions    model.ActionService
-		Admissions model.AdmissionService
-		Resources  model.ResourceService
-		Perms      model.PermService
-		Roles      model.RoleService
-		Users      model.UserService
-		Settings   model.SettingService
+		Actions     model.ActionService
+		Admissions  model.AdmissionService
+		Resources   model.ResourceService
+		Permissions model.PermissionService
+		Roles       model.RoleService
+		Users       model.UserService
+		Settings    model.SettingService
 	}
 )
 
@@ -57,7 +57,7 @@ func NewService(config *config.Config) *Service {
 		log.Fatalf("Init db has some errors! error: %s", err)
 	}
 
-	// init perm framework
+	// init permission framework
 	admissions := admission.New(admission.Config{
 		CasbinModel: config.Admission.CasbinModel,
 		TablePrefix: config.Admission.TablePrefix,
@@ -67,12 +67,12 @@ func NewService(config *config.Config) *Service {
 	// auto migrate
 
 	return &Service{
-		Actions:    action.New(dbs),
-		Admissions: admissions,
-		Resources:  resource.New(dbs),
-		Perms:      perm.New(dbs),
-		Roles:      role.New(dbs),
-		Users:      user.New(dbs),
-		Settings:   setting.New(dbs),
+		Actions:     action.New(dbs),
+		Admissions:  admissions,
+		Resources:   resource.New(dbs),
+		Permissions: permission.New(dbs),
+		Roles:       role.New(dbs),
+		Users:       user.New(dbs),
+		Settings:    setting.New(dbs),
 	}
 }

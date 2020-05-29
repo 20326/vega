@@ -373,25 +373,25 @@ func UserInfoAction(c *gin.Context) {
 	//	return
 	//}
 	//
-	//// var permissions map[uint64]*model.ConsolePermission
+	//// var permissions map[uint64]*model.ConsolePermissionission
 	//roleModels := srv.Roles.ConsoleGetRoles()
 	//log.Warn().Msgf("roleModels %+v", roleModels)
 	//
 	//
 	//for _, roleModel := range roleModels {
 	//
-	//	log.Warn().Msgf("roleModel Permissions:  %s  ", len(roleModel.Permissions))
-	//	//for _, permission := range roleModel.Permissions {
+	//	log.Warn().Msgf("roleModel Permissionissions:  %s  ", len(roleModel.Permissionissions))
+	//	//for _, permission := range roleModel.Permissionissions {
 	//	//}
 	//
-	//	//permissionModels := service.Permission.GetPermissions()
+	//	//permissionModels := service.Permissionission.GetPermissionissions()
 	//	//
 	//	//for _, permissionModel := range permissionModels {
-	//	//	permission := &model.ConsolePermission{
+	//	//	permission := &model.ConsolePermissionission{
 	//	//		ID:             permissionModel.ID,
 	//	//		Name:           permissionModel.Name,
-	//	//		//PermissionId:   permissionModel.Object,
-	//	//		PermissionName: permissionModel.Name,
+	//	//		//PermissionissionId:   permissionModel.Object,
+	//	//		PermissionissionName: permissionModel.Name,
 	//	//		//ActionEntitySet:     resourceModel.Actions,
 	//	//		RoleID:         roleModel.Name,
 	//	//		Status:         1,
@@ -420,7 +420,7 @@ func UserInfoAction(c *gin.Context) {
 	//	"lastLoginTime": user.LoginAt,
 	//	"roleId":        "admin",
 	//	"role": map[string]interface{}{
-	//		"permissions": common.Permissions,
+	//		"permissions": common.Permissionissions,
 	//	},
 	//}
 	data := map[string]interface{}{}

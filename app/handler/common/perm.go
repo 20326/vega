@@ -1,6 +1,6 @@
 package common
 
-var Permissions = []map[string]interface{}{
+var Permissionissions = []map[string]interface{}{
 	{
 		"name":           "异常页面权限",
 		"roleId":         "admin",

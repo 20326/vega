@@ -26,6 +26,9 @@ type (
 		Update(context.Context, *Role) error
 
 		// Delete deletes a role from the datastore.
-		Delete(context.Context, *Role) error
+		Delete(context.Context, uint64) error
+
+		// Create persists a new role to the datastore.
+		Create(context.Context, *Role) error
 	}
 )

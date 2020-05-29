@@ -31,5 +31,8 @@ type (
 
 		// Delete deletes a permission from the datastore.
 		Delete(context.Context, *Perm) error
+
+		// Create persists a new permission to the datastore.
+		Create(context.Context, *Perm) error
 	}
 )

@@ -81,14 +81,14 @@ func (s *resourceService) Update(ctx context.Context, resource *model.Resource) 
 }
 
 // Delete deletes a resource from the datastore.
-func (s *resourceService) Delete(ctx context.Context, resource *model.Resource) error {
+func (s *resourceService) Delete(ctx context.Context, id uint64) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	out := &model.Resource{}
 
 	tx := s.db.Begin()
-	if err := s.db.Where("`id` = ?", resource.ID).First(out).Error; nil != err {
+	if err := s.db.Where("`id` = ?", id).First(out).Error; nil != err {
 		tx.Rollback()
 
 		return err

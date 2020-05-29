@@ -1,13 +1,11 @@
 package service
 
 import (
-	"github.com/20326/vega/app/service/permission"
-	"log"
-
 	"github.com/20326/vega/app/config"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service/action"
 	"github.com/20326/vega/app/service/admission"
+	"github.com/20326/vega/app/service/permission"
 	"github.com/20326/vega/app/service/resource"
 	"github.com/20326/vega/app/service/role"
 	"github.com/20326/vega/app/service/setting"
@@ -15,6 +13,7 @@ import (
 	"github.com/20326/vega/app/service/user"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -23,6 +22,7 @@ const (
 
 type (
 	Service struct {
+		Log         *logrus.Logger
 		Actions     model.ActionService
 		Admissions  model.AdmissionService
 		Resources   model.ResourceService
@@ -41,7 +41,11 @@ func FromContext(c *gin.Context) *Service {
 	return c.MustGet(ContextServiceKey).(*Service)
 }
 
-func NewService(config *config.Config) *Service {
+func (s *Service) GetLogger() *logrus.Logger{
+	return s.Log
+}
+
+func NewService(config *config.Config, log *logrus.Logger) *Service {
 	// init db
 	dbs, err := db.NewDB(db.Config{
 		Driver:          config.Database.Driver,
@@ -67,6 +71,7 @@ func NewService(config *config.Config) *Service {
 	// auto migrate
 
 	return &Service{
+		Log:         log,
 		Actions:     action.New(dbs),
 		Admissions:  admissions,
 		Resources:   resource.New(dbs),

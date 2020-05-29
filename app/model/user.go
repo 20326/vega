@@ -9,8 +9,10 @@ import (
 )
 
 var (
+	passwordLen     = 6
 	errUsernameLen  = errors.New("invalid username length")
 	errUsernameChar = errors.New("invalid character in username")
+	errPasswordLen  = errors.New("invalid password length")
 )
 
 type (
@@ -71,6 +73,10 @@ type (
 // Validate the user and returns an error if the
 // validation fails.
 func (u *User) Validate() error {
+	if passwordLen > len(u.Password) {
+		return errPasswordLen
+	}
+
 	switch {
 	case !govalidator.IsByteLength(u.Username, 5, 30):
 		return errUsernameLen

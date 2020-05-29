@@ -2,9 +2,9 @@ package config
 
 import (
 	"errors"
-	"github.com/sirupsen/logrus"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 

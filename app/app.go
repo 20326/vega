@@ -70,7 +70,7 @@ func StartHttpServer(configPath string, pidFile string) {
 	r := gin.Default()
 
 	// init service
-	srv := service.NewService(cfg)
+	srv := service.NewService(cfg, log)
 	r.Use(middleware.ServiceMiddleware(srv))
 
 	// init session

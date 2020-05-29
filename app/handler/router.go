@@ -47,11 +47,11 @@ func NewHandlers(r *gin.Engine) {
 		apiGroup.PUT("/roles/:id", role.UpdateRoleAction)
 		apiGroup.DELETE("/roles/:id", role.DeleteRoleAction)
 		// permission admin
-		apiGroup.GET("/permissions", permission.GetPermissionissionsAction)
-		apiGroup.POST("/permissions", permission.AddPermissionissionAction)
-		apiGroup.GET("/permissions/:id", permission.GetPermissionissionAction)
-		apiGroup.PUT("/permissions/:id", permission.UpdatePermissionissionAction)
-		apiGroup.DELETE("/permissions/:id", permission.DeletePermissionissionAction)
+		apiGroup.GET("/permissions", permission.GetPermissionAction)
+		apiGroup.POST("/permissions", permission.AddPermissionAction)
+		apiGroup.GET("/permissions/:id", permission.GetPermissionAction)
+		apiGroup.PUT("/permissions/:id", permission.UpdatePermissionAction)
+		apiGroup.DELETE("/permissions/:id", permission.DeletePermissionAction)
 	}
 
 	// console
@@ -70,11 +70,11 @@ func NewHandlers(r *gin.Engine) {
 	//	consoleGroup.PUT("/roles/:id", console.UpdateRoleAction)
 	//	consoleGroup.DELETE("/roles/:id", console.DeleteRoleAction)
 	//	// permission admin
-	//	consoleGroup.GET("/permissions", console.GetPermissionissionsAction)
-	//	consoleGroup.POST("/permissions", console.AddPermissionissionAction)
-	//	consoleGroup.GET("/permissions/:id", console.GetPermissionissionAction)
-	//	consoleGroup.PUT("/permissions/:id", console.UpdatePermissionissionAction)
-	//	consoleGroup.DELETE("/permissions/:id", console.DeletePermissionissionAction)
+	//	consoleGroup.GET("/permissions", console.GetPermissionAction)
+	//	consoleGroup.POST("/permissions", console.AddPermissionAction)
+	//	consoleGroup.GET("/permissions/:id", console.GetPermissionAction)
+	//	consoleGroup.PUT("/permissions/:id", console.UpdatePermissionAction)
+	//	consoleGroup.DELETE("/permissions/:id", console.DeletePermissionAction)
 	//	// setting admin
 	//	consoleGroup.GET("/settings", console.GetSettingsAction)
 	//	consoleGroup.GET("/settings/:category", console.GetSettingsAction)

@@ -11,31 +11,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetActionsAction gets actions.
-func GetActionsAction(c *gin.Context) {
+// GetPermissionsAction gets permissions.
+func GetPermissionsAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	actions, _ := srv.Actions.List(c)
+	permissions, _ := srv.Permissions.List(c)
 
-	//var actions []*model.ConsoleAction
-	//for _, actionModel := range actionModels {
-	//	comment := &model.ConsoleAction{
-	//		ID:   actionModel.ID,
-	//		Name: actionModel.Name,
+	//var permissions []*model.ConsolePermission
+	//for _, permissionModel := range permissionModels {
+	//	comment := &model.ConsolePermission{
+	//		ID:   permissionModel.ID,
+	//		Name: permissionModel.Name,
 	//	}
 	//
-	//	actions = append(actions, comment)
+	//	permissions = append(permissions, comment)
 	//}
 
 	data := map[string]interface{}{}
-	data["actions"] = actions
+	data["permissions"] = permissions
 	result.Result = data
 }
 
-// GetActionAction get a action.
-func GetActionAction(c *gin.Context) {
+// GetPermissionAction get a permission.
+func GetPermissionAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -48,7 +48,7 @@ func GetActionAction(c *gin.Context) {
 	}
 
 	srv := service.FromContext(c)
-	data, err := srv.Actions.Find(c, id)
+	data, err := srv.Permissions.Find(c, id)
 	if nil == data {
 		result.Error(err)
 
@@ -58,8 +58,8 @@ func GetActionAction(c *gin.Context) {
 	result.Result = data
 }
 
-// DeleteActionAction remove a action.
-func DeleteActionAction(c *gin.Context) {
+// DeletePermissionAction remove a permission.
+func DeletePermissionAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -72,14 +72,14 @@ func DeleteActionAction(c *gin.Context) {
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Actions.Delete(c, id); nil != err {
+	if err := srv.Permissions.Delete(c, id); nil != err {
 		result.Error(err)
 
 	}
 }
 
-// UpdateActionAction updates a action.
-func UpdateActionAction(c *gin.Context) {
+// UpdatePermissionAction updates a permission.
+func UpdatePermissionAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -91,33 +91,33 @@ func UpdateActionAction(c *gin.Context) {
 		return
 	}
 
-	action := &model.Action{Model: model.Model{ID: uint64(id)}}
-	if err := c.BindJSON(action); nil != err {
-		result.Error(errors.New("parses update action request failed"))
+	permission := &model.Permission{Model: model.Model{ID: uint64(id)}}
+	if err := c.BindJSON(permission); nil != err {
+		result.Error(errors.New("parses update permission request failed"))
 
 		return
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Actions.Update(c, action); nil != err {
+	if err := srv.Permissions.Update(c, permission); nil != err {
 		result.Error(err)
 	}
 }
 
-// AddActionAction adds a action.
-func AddActionAction(c *gin.Context) {
+// AddPermissionAction adds a permission.
+func AddPermissionAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
-	action := &model.Action{}
-	if err := c.BindJSON(action); nil != err {
+	permission := &model.Permission{}
+	if err := c.BindJSON(permission); nil != err {
 		result.Error(err)
 
 		return
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Actions.Create(c, action); nil != err {
+	if err := srv.Permissions.Create(c, permission); nil != err {
 		result.Error(err)
 	}
 }

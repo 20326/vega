@@ -6,8 +6,6 @@ import (
 	"strconv"
 
 	"github.com/20326/vega/app/config"
-	// "github.com/20326/vega/app/model"
-	// "github.com/gin-gonic/gin"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
 )
@@ -33,17 +31,6 @@ func NewSessionsStore(config *config.Config) sessions.Store {
 		HttpOnly: true,
 	})
 
-	_ = redis.SetKeyPrefix(store, config.Session.KeyPrefix + ":")
+	_ = redis.SetKeyPrefix(store, config.Session.KeyPrefix+":")
 	return store
 }
-
-//
-//func SessionsMiddleware(sessions model.Session) gin.HandlerFunc {
-//	return func(c *gin.Context) {
-//
-//		user, err := sessions.Get(c)
-//		log.Error().Err(err).Msgf("session user mw: %+v", user)
-//
-//		c.Next()
-//	}
-//}

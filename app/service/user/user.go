@@ -102,6 +102,21 @@ func (s *userService) Update(ctx context.Context, user *model.User) error {
 	return nil
 }
 
+// Update columns persists an updated user to the datastore. col map[string]interface{}
+func (s *userService) Updates(ctx context.Context, user *model.User, values interface{}) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	tx := s.db.Begin()
+	if err := s.db.Model(&model.User{}).Updates(values).Error; nil != err {
+		tx.Rollback()
+
+		return err
+	}
+	tx.Commit()
+	return nil
+}
+
 // Delete deletes a user from the datastore.
 func (s *userService) Delete(ctx context.Context, user *model.User) error {
 	s.mutex.Lock()

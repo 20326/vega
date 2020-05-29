@@ -57,6 +57,9 @@ type (
 		// Update persists an updated user to the datastore.
 		Update(context.Context, *User) error
 
+		// Update columns persists an updated user to the datastore.
+		Updates(context.Context, *User, interface{}) error
+
 		// Delete deletes a user from the datastore.
 		Delete(context.Context, *User) error
 

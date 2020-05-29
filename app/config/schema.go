@@ -40,15 +40,16 @@ type SessionConfig struct {
 }
 
 type Config struct {
-	Addr        string
-	PidFile     string
-	TLSCert     string
-	TLSKey      string
-	LogLevel    string
-	LogFilePath string
-	Maintenance bool
-	Database    DatabaseConfig
-	Admission   AdmissionConfig
-	Redis       RedisConfig
-	Session     SessionConfig
+	Addr         string
+	PidFile      string
+	TLSCert      string
+	TLSKey       string
+	LogLevel     string
+	LogFormatter string
+	LogFilePath  string
+	Maintenance  bool
+	Database     DatabaseConfig
+	Admission    AdmissionConfig
+	Redis        RedisConfig
+	Session      SessionConfig
 }

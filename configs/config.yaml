@@ -9,6 +9,9 @@ Addr: 127.0.0.1:8011
 
 # Level of verbosity for logs: info, debug, trace
 LogLevel: debug
+# Formatter for logs: json, text
+LogFormatter: json
+
 ## File path where the logs will be written. If not set logs are written to stdout.
 # LogFilePath: /var/log/vega
 

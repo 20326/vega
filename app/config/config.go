@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"github.com/sirupsen/logrus"
-	"os"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -49,16 +48,17 @@ func LoadConfig(configPath string, log *logrus.Logger) (*Config, error) {
 		log.SetLevel(logrus.WarnLevel)
 	}
 
-	env := os.Getenv("ENVIRONMENT")
-	if env == "production" {
+	switch cfg.LogFormatter {
+	case "json":
 		log.SetFormatter(&logrus.JSONFormatter{})
-	} else if env == "dev" {
+		break
+	case "text":
+		log.SetFormatter(&logrus.TextFormatter{})
+		break
+	default:
 		log.SetFormatter(&logrus.JSONFormatter{})
-	} else {
-		log.SetFormatter(&logrus.JSONFormatter{})
-		// The TextFormatter is default, you don't actually have to do this.
-		// log.SetFormatter(&logrus.TextFormatter{})
 	}
+
 	log.WithFields(logrus.Fields{
 		"config": cfg,
 	}).Info("===> Vega is running in development mode. <===")

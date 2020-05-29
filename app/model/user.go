@@ -20,21 +20,22 @@ type (
 	User struct {
 		Model
 
-		Username string     `gorm:"size:32" json:"username"`
-		Nickname string     `gorm:"size:32" json:"nickname"`
-		Avatar   string     `gorm:"size:255" json:"avatar"`
-		BIO      string     `gorm:"size:512" json:"bio"`
-		Locale   string     `gorm:"size:32" json:"locale"`
-		Password string     `gorm:"size:64" json:"password,omitempty"`
-		Email    string     `gorm:"size:64" json:"email"`
-		Phone    string     `gorm:"size:16" json:"phone"`
-		Status   int        `gorm:"default:1" json:"status"`
-		LoginIP  string     `gorm:"size:32" json:"loginIP"`
-		LoginAt  *time.Time `json:"loginAt"`
-		Token    string     `gorm:"size:255" json:"-"`
-		Refresh  string     `gorm:"size:255" json:"-"`
-		Expiry   int64      `gorm:"size:255" json:"-"`
-		Hash     string     `gorm:"size:64" json:"-"`
+		Username     string     `gorm:"size:32" json:"username"`
+		Nickname     string     `gorm:"size:32" json:"nickname"`
+		Avatar       string     `gorm:"size:255" json:"avatar"`
+		BIO          string     `gorm:"size:512" json:"bio"`
+		Locale       string     `gorm:"size:32" json:"locale"`
+		Password     string     `json:"password,omitempty"`
+		PasswordHash string     `gorm:"size:64" json:"-"`
+		Email        string     `gorm:"size:64" json:"email"`
+		Phone        string     `gorm:"size:16" json:"phone"`
+		Status       int        `gorm:"default:1" json:"status"`
+		LoginIP      string     `gorm:"size:32" json:"loginIP"`
+		LoginAt      *time.Time `json:"loginAt"`
+		Token        string     `gorm:"size:255" json:"-"`
+		Refresh      string     `gorm:"size:255" json:"-"`
+		Expiry       int64      `gorm:"size:255" json:"-"`
+		Hash         string     `gorm:"size:64" json:"-"`
 
 		// Role      []Role     `json:"role" gorm:"many2many:user_role;"`
 	}

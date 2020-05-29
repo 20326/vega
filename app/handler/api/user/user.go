@@ -61,9 +61,9 @@ func RegisterAction(c *gin.Context) {
 	// create user
 	password := crypto.HashAndSalt([]byte(user.Password))
 	if err := srv.Users.Create(c, &model.User{
-		Username: user.Username,
-		Password: password,
-		Phone:    user.Phone,
+		Username:     user.Username,
+		PasswordHash: password,
+		Phone:        user.Phone,
 	}); nil != err {
 		result.Error(err)
 	}
@@ -102,7 +102,7 @@ func LoginAction(c *gin.Context) {
 		return
 	}
 	// check password
-	if !crypto.ComparePasswords(user.Password, []byte(password)) {
+	if !crypto.ComparePasswords(user.PasswordHash, []byte(password)) {
 		result.Error(errors.New("username and password do not match"))
 		return
 	}
@@ -210,7 +210,7 @@ func ChangePasswordAction(c *gin.Context) {
 
 	// check password
 	session.Token = uuid.NewV4().String()
-	if !crypto.ComparePasswords(user.Password, []byte(oldPassword)) {
+	if !crypto.ComparePasswords(user.PasswordHash, []byte(oldPassword)) {
 		result.Error(errors.New("invalid old password"))
 		return
 	} else {
@@ -220,7 +220,7 @@ func ChangePasswordAction(c *gin.Context) {
 			return
 		}
 		err = srv.Users.Updates(c, user, map[string]interface{}{
-			"password": crypto.HashAndSalt([]byte(password)),
+			"password_hash": crypto.HashAndSalt([]byte(password)),
 			"token":    session.Token,
 		})
 	}

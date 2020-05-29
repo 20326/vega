@@ -6,8 +6,12 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+)
 
-	"github.com/20326/vega/pkg/errors"
+const (
+	CodeOk      = 0  // OK
+	CodeErr     = -1 // general error
+	CodeAuthErr = -2 // unauthenticated request
 )
 
 type (
@@ -16,10 +20,10 @@ type (
 
 	// Result represents a common-used result struct.
 	Result struct {
-		Code int    `json:"code"` // return code
-		Msg  string `json:"msg"`  // message
-		// ErrorMsg string      `json:"errorMsg,omitempty"` // show message to ui
-		Result interface{} `json:"result"` // data object
+		Code   int         `json:"code"`             // return code
+		Msg    string      `json:"msg"`              // message
+		Data   interface{} `json:"data,omitempty"`   // data object
+		Result interface{} `json:"result,omitempty"` // result data object
 	}
 )
 
@@ -44,49 +48,22 @@ func NewResult() *Result {
 }
 
 func (r *Result) Error(err error) {
-	r.Code = errors.CodeErr
+	r.Code = CodeErr
+	r.Msg = err.Error()
+}
+
+func (r *Result) AuthError(err error) {
+	r.Code = CodeAuthErr
 	r.Msg = err.Error()
 }
 
 // ErrorCode writes the json-encoded error message to the response.
-func ErrorCode(w http.ResponseWriter, err error, status int) {
-	JSON(w, &errors.Error{Message: err.Error()}, status)
-}
-
-// InternalError writes the json-encoded error message to the response
-// with a 500 internal server error.
-func InternalError(w http.ResponseWriter) {
-	JSON(w, &errors.ErrInternalError, 500)
-}
-
-// NotImplemented writes the json-encoded error message to the
-// response with a 501 not found status code.
-func NotImplemented(w http.ResponseWriter) {
-	JSON(w, &errors.ErrNotImplemented, 501)
-}
-
-// NotFound writes the json-encoded error message to the response
-// with a 404 not found status code.
-func NotFound(w http.ResponseWriter) {
-	JSON(w, &errors.ErrNotFound, 404)
-}
-
-// Unauthorized writes the json-encoded error message to the response
-// with a 401 unauthorized status code.
-func Unauthorized(w http.ResponseWriter) {
-	JSON(w, &errors.ErrUnauthorized, 401)
-}
-
-// Forbidden writes the json-encoded error message to the response
-// with a 403 forbidden status code.
-func Forbidden(w http.ResponseWriter) {
-	JSON(w, &errors.ErrForbidden, 403)
-}
-
-// BadRequest writes the json-encoded error message to the response
-// with a 400 bad request status code.
-func BadRequest(w http.ResponseWriter) {
-	JSON(w, &errors.ErrBadRequest, 400)
+func ErrorJSON(w http.ResponseWriter, code int, err string, status int) {
+	JSON(w, &Result{
+		Code:   code,
+		Msg:    err,
+		Result: &DataModel{},
+	}, status)
 }
 
 // JSON writes the json-encoded error message to the response

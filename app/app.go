@@ -60,6 +60,7 @@ var log = logrus.New()
 func StartHttpServer(configPath string, pidFile string) {
 	var err error
 
+	log.Info("===> Vega starting ... <===")
 	cfg, err := config.LoadConfig(configPath, log)
 	log.SetFormatter(&logrus.JSONFormatter{})
 	if nil != err {
@@ -77,9 +78,7 @@ func StartHttpServer(configPath string, pidFile string) {
 	r.Use(sessions.Sessions("session", sessionStore))
 
 	r.Use(middleware.LoggerWithRequestID(log))
-	log.WithFields(logrus.Fields{
-		"config": cfg,
-	}).Info("init service")
+	log.Info("init service")
 	// use middleware
 
 	//init handler

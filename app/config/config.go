@@ -61,7 +61,7 @@ func LoadConfig(configPath string, log *logrus.Logger) (*Config, error) {
 
 	log.WithFields(logrus.Fields{
 		"config": cfg,
-	}).Info("===> Vega is running in development mode. <===")
+	}).Info("load config finished")
 
 	return &cfg, nil
 }

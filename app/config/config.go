@@ -61,7 +61,7 @@ func LoadConfig(configPath string, log *logrus.Logger) (*Config, error) {
 
 	log.WithFields(logrus.Fields{
 		"config": cfg,
-	}).Info("load config finished")
+	}).Debug("load config finished")
 
 	return &cfg, nil
 }

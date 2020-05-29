@@ -6,7 +6,6 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/jinzhu/gorm"
-	"github.com/phuslu/log"
 )
 
 // New returns a new ResourceService.
@@ -38,7 +37,6 @@ func (s *resourceService) List(ctx context.Context) ([]*model.Resource, error) {
 	var out []*model.Resource
 
 	if err = s.db.Model(&model.Resource{}).Order("`id` DESC").Find(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get resources failed")
 	}
 
 	return out, err
@@ -111,7 +109,6 @@ func (s *resourceService) Count(ctx context.Context) (int, error) {
 	var out int
 
 	if err = s.db.Model(&model.Resource{}).Order("`id` DESC").Count(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get resources failed")
 	}
 
 	return out, err

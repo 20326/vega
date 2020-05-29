@@ -6,7 +6,6 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/jinzhu/gorm"
-	"github.com/phuslu/log"
 )
 
 // New returns a new PermService.
@@ -38,7 +37,6 @@ func (s *permService) List(ctx context.Context) ([]*model.Perm, error) {
 	var out []*model.Perm
 
 	if err = s.db.Model(&model.Perm{}).Order("`id` DESC").Find(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get perms failed")
 	}
 
 	return out, err
@@ -111,7 +109,6 @@ func (s *permService) Count(ctx context.Context) (int, error) {
 	var out int
 
 	if err = s.db.Model(&model.Perm{}).Order("`id` DESC").Count(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get perms failed")
 	}
 
 	return out, err

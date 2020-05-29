@@ -1,7 +1,8 @@
 package crypto
 
 import (
-	"github.com/phuslu/log"
+	"log"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -28,7 +29,7 @@ func HashAndSalt(pwd []byte) string {
 	// than the MinCost (4)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
-		log.Error().Err(err).Msg("comparePasswords failed")
+		log.Println(err)
 	}
 	// GenerateFromPassword returns a byte slice so we need to
 	// convert the bytes to a string and return it

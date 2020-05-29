@@ -1,6 +1,8 @@
 package service
 
 import (
+	"log"
+
 	"github.com/20326/vega/app/config"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service/action"
@@ -13,7 +15,6 @@ import (
 	"github.com/20326/vega/app/service/user"
 
 	"github.com/gin-gonic/gin"
-	"github.com/phuslu/log"
 )
 
 const (
@@ -53,7 +54,7 @@ func NewService(config *config.Config) *Service {
 		ConnMaxLifetime: config.Database.ConnMaxLifetime,
 	})
 	if nil != err {
-		log.Fatal().Err(err).Msg("Init db has some errors!")
+		log.Fatalf("Init db has some errors! error: %s", err)
 	}
 
 	// init perm framework

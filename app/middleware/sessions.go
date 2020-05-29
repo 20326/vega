@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 
 	"github.com/20326/vega/app/config"
@@ -9,8 +10,6 @@ import (
 	// "github.com/gin-gonic/gin"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
-
-	"github.com/phuslu/log"
 )
 
 func NewSessionsStore(config *config.Config) sessions.Store {
@@ -22,13 +21,10 @@ func NewSessionsStore(config *config.Config) sessions.Store {
 		strconv.Itoa(config.Redis.DBIndex),
 		[]byte(config.Session.Secret))
 
-	log.Info().Str("Secret", config.Session.Secret).Msgf("session Secret")
-
 	if nil != err {
-		log.Fatal().Err(err).Msg("create session redis store failed")
+		log.Fatalf("create session redis store failed, err: %s", err)
 	}
 
-	log.Info().Msgf("sessionStore: %+v", store)
 	store.Options(sessions.Options{
 		// Domain:   conf.Session.Domain,
 		Path:     "/",

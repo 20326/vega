@@ -6,7 +6,6 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/jinzhu/gorm"
-	"github.com/phuslu/log"
 )
 
 // New returns a new UserService.
@@ -60,7 +59,6 @@ func (s *userService) List(ctx context.Context) ([]*model.User, error) {
 	var out []*model.User
 
 	if err = s.db.Model(&model.User{}).Order("`id` DESC").Find(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get users failed")
 	}
 
 	return out, err
@@ -133,7 +131,6 @@ func (s *userService) Count(ctx context.Context) (int, error) {
 	var out int
 
 	if err = s.db.Model(&model.User{}).Order("`id` DESC").Count(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get users failed")
 	}
 
 	return out, err

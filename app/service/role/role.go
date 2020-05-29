@@ -6,7 +6,6 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/jinzhu/gorm"
-	"github.com/phuslu/log"
 )
 
 // New returns a new RoleService.
@@ -38,7 +37,6 @@ func (s *roleService) List(ctx context.Context) ([]*model.Role, error) {
 	var out []*model.Role
 
 	if err = s.db.Model(&model.Role{}).Order("`id` DESC").Find(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get roles failed")
 	}
 
 	return out, err
@@ -111,7 +109,6 @@ func (s *roleService) Count(ctx context.Context) (int, error) {
 	var out int
 
 	if err = s.db.Model(&model.Role{}).Order("`id` DESC").Count(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get roles failed")
 	}
 
 	return out, err

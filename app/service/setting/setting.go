@@ -6,7 +6,6 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/jinzhu/gorm"
-	"github.com/phuslu/log"
 )
 
 // New returns a new SettingService.
@@ -38,7 +37,6 @@ func (s *settingService) List(ctx context.Context) ([]*model.Setting, error) {
 	var out []*model.Setting
 
 	if err = s.db.Model(&model.Setting{}).Order("`id` DESC").Find(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get settings failed")
 	}
 
 	return out, err
@@ -111,7 +109,6 @@ func (s *settingService) Count(ctx context.Context) (int, error) {
 	var out int
 
 	if err = s.db.Model(&model.Setting{}).Order("`id` DESC").Count(&out).Error; nil != err {
-		log.Error().Err(err).Msg("get settings failed")
 	}
 
 	return out, err

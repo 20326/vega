@@ -1,6 +1,8 @@
 package model
 
-import "context"
+import (
+	"context"
+)
 
 type (
 	// Perm represents an auth request of the system.
@@ -26,6 +28,9 @@ type (
 		Update(context.Context, *Resource) error
 
 		// Delete deletes a resource from the datastore.
-		Delete(context.Context, *Resource) error
+		Delete(context.Context, uint64) error
+
+		// Create persists a new resource to the datastore.
+		Create(context.Context, *Resource) error
 	}
 )

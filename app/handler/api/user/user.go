@@ -43,8 +43,8 @@ func Step2CodeAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
-	s := service.FromContext(c)
-	user, err := s.Users.Find(c, 1)
+	srv := service.FromContext(c)
+	user, err := srv.Users.Find(c, 1)
 	if nil == user {
 		log.Warn().Err(err).Msg("can not get user by id")
 		result.Error(err)

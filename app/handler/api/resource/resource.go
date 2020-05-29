@@ -1,4 +1,4 @@
-package setting
+package resource
 
 import (
 	"errors"
@@ -11,31 +11,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetSettingsAction gets settings.
-func GetSettingsAction(c *gin.Context) {
+// GetResourcesAction gets resources.
+func GetResourcesAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	settings, _ := srv.Settings.List(c)
+	resources, _ := srv.Resources.List(c)
 
-	//var settings []*model.ConsoleSetting
-	//for _, settingModel := range settingModels {
-	//	comment := &model.ConsoleSetting{
-	//		ID:   settingModel.ID,
-	//		Name: settingModel.Name,
+	//var resources []*model.ConsoleResource
+	//for _, resourceModel := range resourceModels {
+	//	comment := &model.ConsoleResource{
+	//		ID:   resourceModel.ID,
+	//		Name: resourceModel.Name,
 	//	}
 	//
-	//	settings = append(settings, comment)
+	//	resources = append(resources, comment)
 	//}
 
 	data := map[string]interface{}{}
-	data["settings"] = settings
+	data["resources"] = resources
 	result.Result = data
 }
 
-// GetSettingAction get a setting.
-func GetSettingAction(c *gin.Context) {
+// GetResourceAction get a resource.
+func GetResourceAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -48,7 +48,7 @@ func GetSettingAction(c *gin.Context) {
 	}
 
 	srv := service.FromContext(c)
-	data, err := srv.Settings.Find(c, id)
+	data, err := srv.Resources.Find(c, id)
 	if nil == data {
 		result.Error(err)
 
@@ -58,8 +58,8 @@ func GetSettingAction(c *gin.Context) {
 	result.Result = data
 }
 
-// DeleteSettingAction remove a setting.
-func DeleteSettingAction(c *gin.Context) {
+// DeleteResourceAction remove a resource.
+func DeleteResourceAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -72,14 +72,14 @@ func DeleteSettingAction(c *gin.Context) {
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Settings.Delete(c, id); nil != err {
+	if err := srv.Resources.Delete(c, id); nil != err {
 		result.Error(err)
 
 	}
 }
 
-// UpdateSettingAction updates a setting.
-func UpdateSettingAction(c *gin.Context) {
+// UpdateResourceAction updates a resource.
+func UpdateResourceAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
@@ -91,33 +91,33 @@ func UpdateSettingAction(c *gin.Context) {
 		return
 	}
 
-	setting := &model.Setting{Model: model.Model{ID: uint64(id)}}
-	if err := c.BindJSON(setting); nil != err {
-		result.Error(errors.New("parses update setting request failed"))
+	resource := &model.Resource{Model: model.Model{ID: uint64(id)}}
+	if err := c.BindJSON(resource); nil != err {
+		result.Error(errors.New("parses update resource request failed"))
 
 		return
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Settings.Update(c, setting); nil != err {
+	if err := srv.Resources.Update(c, resource); nil != err {
 		result.Error(err)
 	}
 }
 
-// AddSettingAction adds a setting.
-func AddSettingAction(c *gin.Context) {
+// AddResourceAction adds a resource.
+func AddResourceAction(c *gin.Context) {
 	result := render.NewResult()
 	defer c.JSON(http.StatusOK, result)
 
-	setting := &model.Setting{}
-	if err := c.BindJSON(setting); nil != err {
+	resource := &model.Resource{}
+	if err := c.BindJSON(resource); nil != err {
 		result.Error(err)
 
 		return
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Settings.Create(c, setting); nil != err {
+	if err := srv.Resources.Create(c, resource); nil != err {
 		result.Error(err)
 	}
 }

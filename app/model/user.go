@@ -63,7 +63,7 @@ type (
 		Updates(context.Context, *User, interface{}) error
 
 		// Delete deletes a user from the datastore.
-		Delete(context.Context, *User) error
+		Delete(context.Context, uint64) error
 
 		// Count returns a count of users.
 		Count(context.Context) (int, error)

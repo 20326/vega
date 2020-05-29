@@ -9,7 +9,6 @@ import (
 	//"strconv"
 	//"time"
 
-	"github.com/20326/vega/app/handler/common"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
 	"github.com/20326/vega/pkg/crypto"
@@ -377,7 +376,7 @@ func UserInfoAction(c *gin.Context) {
 		"lastLoginTime": user.LoginAt,
 		"roleId":        "admin",
 		"role": map[string]interface{}{
-			"permissions": common.Permissionissions,
+			"permissions": Permissionissions,
 		},
 	}
 	result.Msg = "success"

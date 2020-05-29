@@ -1,4 +1,4 @@
-package common
+package user
 
 var Permissionissions = []map[string]interface{}{
 	{

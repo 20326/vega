@@ -32,14 +32,6 @@ var runCmd = &cobra.Command{
 	},
 }
 
-var initdbCmd = &cobra.Command{
-	Use:   "initdb",
-	Short: "Init database",
-	Long:  `Init admin,roles,settings,permissions server`,
-	Run: func(cmd *cobra.Command, args []string) {
-		// Do Stuff Here
-	},
-}
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -53,10 +45,6 @@ func init() {
 	runCmd.PersistentFlags().StringVar(&configPathFlag, "config", "", "config file path")
 	runCmd.PersistentFlags().StringVar(&pidFileFlag, "pidfile", "", "PID file")
 	rootCmd.AddCommand(runCmd)
-
-	// read config and init
-	initdbCmd.PersistentFlags().StringVar(&configPathFlag, "config", "", "config file path")
-	rootCmd.AddCommand(initdbCmd)
 
 	cobra.OnInitialize()
 }

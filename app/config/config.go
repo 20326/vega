@@ -65,3 +65,24 @@ func LoadConfig(configPath string, log *logrus.Logger) (*Config, error) {
 
 	return &cfg, nil
 }
+
+func LoadInitData(dataPath string, log *logrus.Logger) (*InitData, error) {
+	var err error
+	viper.AddConfigPath("./configs/")
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("initdata")
+
+	if err = viper.ReadInConfig(); err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			return nil, errors.New("unable to find initdata file" + dataPath)
+		}
+	}
+
+	var data InitData
+	err = viper.Unmarshal(&data)
+
+	log.WithFields(logrus.Fields{
+		"initdata": data,
+	}).Debug("load initdata finished")
+	return &data, err
+}

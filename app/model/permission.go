@@ -10,12 +10,11 @@ type (
 	Permission struct {
 		Model
 
-		Name         string   `gorm:"size:256" json:"name"`
+		Name         string   `gorm:"size:64" json:"name"`
 		Describe     string   `gorm:"size:256" json:"describe"`
-		Resource     Resource `json:"resource"`
-		ResourceID   uint64   `json:"resourceID"`
-		Action       Action   `json:"action"`
-		ActionID     uint64   `json:"actionID"`
+		Icon         string   `gorm:"size:32" json:"icon"`
+		Path         string   `gorm:"size:256" json:"path"`
+		Actions      []Action `gorm:"many2many:permission_action;" json:"actions"`
 		DefaultCheck bool     `gorm:"default:false" json:"defaultCheck"`
 		Status       int      `gorm:"default:1" json:"status"`
 		Deleted      int      `gorm:"default:0" json:"deleted"`

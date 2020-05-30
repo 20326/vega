@@ -8,8 +8,9 @@ type (
 	Action struct {
 		Model
 
-		Action   string `gorm:"size:256" json:"action"`
-		Describe string `gorm:"size:256" json:"describe"`
+		Action    string     `gorm:"size:256" json:"action"`
+		Describe  string     `gorm:"size:256" json:"describe"`
+		Resources []Resource `gorm:"many2many:action_resource;" json:"resources"`
 	}
 
 	// ActionService defines operations for working with system actions.

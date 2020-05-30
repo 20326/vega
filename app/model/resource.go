@@ -10,10 +10,11 @@ type (
 	Resource struct {
 		Model
 
-		Name     string   `gorm:"size:256" json:"name"`
-		Describe string   `gorm:"size:256" json:"describe"`
-		Object   string   `gorm:"size:256" json:"object"`
-		Actions  []Action `json:"actions"`
+		Name     string `gorm:"size:64" json:"name"`
+		Describe string `gorm:"size:256" json:"describe"`
+		ActionID uint64 `json:"actionID"`
+		Method   string `gorm:"size:64" json:"method"`
+		Path     string `gorm:"size:256" json:"path"`
 	}
 
 	// ResourceService defines operations for working with system resource.

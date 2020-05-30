@@ -1,0 +1,55 @@
+###############################################################
+#                   Vega init data                            #
+###############################################################
+
+Permissions:
+  -
+    Name: permission
+    Describe: 权限管理
+    Icon: safety-certificate
+    Path: /console/permissions
+    Actions:
+      -
+        Name: add
+        Describe: 新建
+        Path: /api/console/permissions
+        Resources:
+          -
+            Method: POST
+            Path: /api/console/permissions
+          -
+            Method: PUT
+            Path: /api/console/users/:id
+      -
+        Name: get
+        Describe: 查询
+        Path: /api/console/permissions
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/permissions
+
+  -
+    Name: users
+    Describe: 用户管理
+    Icon: safety-certificate
+    Path: /console/users
+    Actions:
+      -
+        Name: add
+        Describe: 新建
+        Path: /api/console/users
+        Resources:
+          -
+            Method: POST
+            Path: /api/console/users
+          - Method: PUT
+            Path: /api/console/users/:id
+      -
+        Name: get
+        Describe: 查询
+        Path: /api/console/users
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/users

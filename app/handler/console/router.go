@@ -50,7 +50,7 @@ func NewHandlers(r *gin.Engine) {
 	consoleGroup.DELETE("/users/:id", user.DeleteUserAction)
 }
 
-// router
+// TODO uglify code
 func GetSettingsHandler(c *gin.Context) {
 	idArg := c.Param("id")
 	groupArg := c.Param("group")
@@ -66,7 +66,7 @@ func GetSettingsHandler(c *gin.Context) {
 	}
 }
 
-// router
+// TODO uglify code
 func UpdateSettingsHandler(c *gin.Context) {
 	idArg := c.Param("id")
 	groupArg := c.Param("group")

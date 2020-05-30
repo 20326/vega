@@ -32,9 +32,10 @@ func NewHandlers(r *gin.Engine) {
 
 	consoleGroup.GET("/settings", setting.GetSettingsAction)
 	consoleGroup.GET("/settings/:id", GetSettingsHandler)
+	consoleGroup.POST("/settings/:id", UpdateSettingsHandler)
 	consoleGroup.GET("/settings/:id/:group", GetSettingsHandler)
-	consoleGroup.POST("/settings", UpdateSettingsHandler)
-	consoleGroup.PUT("/settings/:id", setting.UpdateSettingAction)
+	consoleGroup.POST("/settings/:id/:group", UpdateSettingsHandler)
+	consoleGroup.PUT("/settings/:id", setting.AddSettingAction)
 	consoleGroup.DELETE("/settings/:id", setting.DeleteSettingAction)
 
 	consoleGroup.GET("/permissions", permission.GetPermissionAction)

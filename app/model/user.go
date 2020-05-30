@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/20326/vega/pkg/pagination"
 	"github.com/asaskevich/govalidator"
 )
 
@@ -50,6 +51,9 @@ type (
 
 		// FindToken returns a user from the datastore by token.
 		FindToken(context.Context, string) (*User, error)
+
+		// FindWhere returns a list of users from the datastore.
+		FindWhere(PageQuery) ([]*User, pagination.Pagination)
 
 		// List returns a list of users from the datastore.
 		List(context.Context) ([]*User, error)

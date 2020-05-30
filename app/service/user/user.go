@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/20326/vega/app/model"
+	"github.com/20326/vega/pkg/pagination"
 	"github.com/jinzhu/gorm"
 )
 
@@ -51,6 +52,24 @@ func (s *userService) FindToken(ctx context.Context, token string) (*model.User,
 	}
 
 	return out, nil
+}
+
+// FindWhere returns a list of users by query params from the datastore.
+func (s *userService) FindWhere(query model.PageQuery) (out []*model.User, pagination pagination.Pagination) {
+	offset := (query.PageNo - 1) * query.PageSize
+	count := 0
+
+	var err error
+
+	if err = s.db.Model(&model.User{}).
+		Where(query.Where, query.WhereArgs...).
+		Count(&count).Offset(offset).Limit(query.PageSize).
+		Order("`id` DESC").Find(&out).Error; nil != err {
+	}
+
+	pagination = pagination.NewPagination(query.PageNo, query.PageSize, count)
+
+	return
 }
 
 // List returns a list of users from the datastore.

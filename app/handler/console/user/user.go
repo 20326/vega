@@ -7,6 +7,7 @@ import (
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
+	"github.com/20326/vega/pkg/params"
 	"github.com/20326/vega/pkg/render"
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,24 @@ func GetUsersAction(c *gin.Context) {
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	users, _ := srv.Users.List(c)
+
+
+	where := "`username` != ?"
+	whereArgs := []interface{}{""}
+
+	keyword := c.Query("key")
+	if "" != keyword {
+		where += " `username` LIKE ? OR `nickname` LIKE ?"
+		whereArgs = append(whereArgs, "%"+keyword+"%", "%"+keyword+"%")
+	}
+	pageQuery := model.PageQuery{
+		PageNo: params.GetIntArgs(c, "pageNo"),
+		PageSize: params.GetIntArgs(c, "pageSize"),
+		Where: where,
+		WhereArgs: whereArgs,
+	}
+
+	users, pagination := srv.Users.FindWhere(pageQuery)
 
 	//var users []*model.ConsoleUser
 	//for _, userModel := range userModels {
@@ -29,9 +47,8 @@ func GetUsersAction(c *gin.Context) {
 	//	users = append(users, comment)
 	//}
 
-	data := map[string]interface{}{}
-	data["users"] = users
-	result.Result = data
+	pagination.SetData(users)
+	result.Result = pagination
 }
 
 // GetUserAction get a user.

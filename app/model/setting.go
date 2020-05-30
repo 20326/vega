@@ -13,6 +13,14 @@ type (
 		Describe string `gorm:"size:text" json:"describe"`
 	}
 
+	// ConsoleSetting represents console user.
+	ConsoleSetting struct {
+		ID    uint64 `json:"id"`
+		Name  string `json:"name"`
+		Value string `json:"value"`
+		Desc  string `json:"desc"`
+	}
+
 	// SettingService defines operations for working with system settings.
 	SettingService interface {
 		// Find returns a setting from the datastore.

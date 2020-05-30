@@ -18,20 +18,15 @@ func GetSettingsAction(c *gin.Context) {
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	settings, _ := srv.Settings.List(c)
+	settingModels, _ := srv.Settings.List(c)
 
-	//var settings []*model.ConsoleSetting
-	//for _, settingModel := range settingModels {
-	//	comment := &model.ConsoleSetting{
-	//		ID:   settingModel.ID,
-	//		Name: settingModel.Name,
-	//	}
-	//
-	//	settings = append(settings, comment)
-	//}
+	settings := map[string]interface{}{}
+	for _, settingModel := range settingModels {
+		settings[settingModel.Name] = settingModel.Value
+	}
 
 	data := map[string]interface{}{}
-	data["settings"] = settings
+	data["data"] = settings
 	result.Result = data
 }
 

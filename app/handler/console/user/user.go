@@ -19,15 +19,27 @@ func GetUsersAction(c *gin.Context) {
 
 	srv := service.FromContext(c)
 
+	where := ""
+	whereArgs := []interface{}{}
 
-	where := "`username` != ?"
-	whereArgs := []interface{}{""}
-
-	keyword := c.Query("key")
-	if "" != keyword {
-		where += " `username` LIKE ? OR `nickname` LIKE ?"
-		whereArgs = append(whereArgs, "%"+keyword+"%", "%"+keyword+"%")
+	name := c.Query("name")
+	if "" != name {
+		where += " `username` LIKE ? OR `nickname` LIKE ? "
+		whereArgs = append(whereArgs, "%"+name+"%", "%"+name+"%")
 	}
+
+	role := c.Query("role")
+	if "" != role {
+		where += " `role` = ? "
+		whereArgs = append(whereArgs, role)
+	}
+
+	status := params.GetIntArgs(c, "status")
+	if 0 < status {
+		where += " `status` = ? "
+		whereArgs = append(whereArgs, status)
+	}
+
 	pageQuery := model.PageQuery{
 		PageNo: params.GetIntArgs(c, "pageNo"),
 		PageSize: params.GetIntArgs(c, "pageSize"),

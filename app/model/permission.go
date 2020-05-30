@@ -1,6 +1,9 @@
 package model
 
-import "context"
+import (
+	"context"
+	"github.com/20326/vega/pkg/pagination"
+)
 
 type (
 	// permission.
@@ -22,6 +25,9 @@ type (
 	PermissionService interface {
 		// Find returns a permission from the datastore.
 		Find(context.Context, uint64) (*Permission, error)
+
+		// FindWhere returns a list of users from the datastore.
+		FindWhere(PageQuery) ([]*Permission, pagination.Pagination)
 
 		// List returns a list of permissions from the datastore.
 		List(context.Context) ([]*Permission, error)

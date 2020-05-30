@@ -61,9 +61,11 @@ func (s *userService) FindWhere(query model.PageQuery) (out []*model.User, pagin
 
 	var err error
 
-	if err = s.db.Model(&model.User{}).
-		Where(query.Where, query.WhereArgs...).
-		Count(&count).Offset(offset).Limit(query.PageSize).
+	tx := s.db.Model(&model.User{})
+	if "" != query.Where {
+		tx = tx.Where(query.Where, query.WhereArgs...)
+	}
+	if err = tx.Count(&count).Offset(offset).Limit(query.PageSize).
 		Order("`id` DESC").Find(&out).Error; nil != err {
 	}
 

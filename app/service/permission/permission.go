@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/20326/vega/app/model"
+	"github.com/20326/vega/pkg/pagination"
 	"github.com/jinzhu/gorm"
 )
 
@@ -29,6 +30,27 @@ func (s *permissionService) Find(ctx context.Context, id uint64) (*model.Permiss
 		return nil, err
 	}
 	return out, nil
+}
+
+// FindWhere returns a list of permissions by query params from the datastore.
+func (s *permissionService) FindWhere(query model.PageQuery) (out []*model.Permission, pagination pagination.Pagination) {
+	offset := (query.PageNo - 1) * query.PageSize
+	count := 0
+
+	var err error
+
+	tx := s.db.Model(&model.Permission{})
+	if "" != query.Where {
+		tx = tx.Where(query.Where, query.WhereArgs...)
+	}
+
+	if err = tx.Count(&count).Offset(offset).Limit(query.PageSize).
+		Order("`id` DESC").Find(&out).Error; nil != err {
+	}
+
+	pagination = pagination.NewPagination(query.PageNo, query.PageSize, count)
+
+	return
 }
 
 // List returns a list of permissions from the datastore.

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/20326/vega/pkg/params"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
 	"github.com/20326/vega/pkg/render"
@@ -17,21 +18,21 @@ func GetPermissionsAction(c *gin.Context) {
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	permissions, _ := srv.Permissions.List(c)
 
-	//var permissions []*model.ConsolePermission
-	//for _, permissionModel := range permissionModels {
-	//	comment := &model.ConsolePermission{
-	//		ID:   permissionModel.ID,
-	//		Name: permissionModel.Name,
-	//	}
-	//
-	//	permissions = append(permissions, comment)
-	//}
+	where := ""
+	whereArgs := []interface{}{""}
+	// TODO
 
-	data := map[string]interface{}{}
-	data["permissions"] = permissions
-	result.Result = data
+	pageQuery := model.PageQuery{
+		PageNo: params.GetIntArgs(c, "pageNo"),
+		PageSize: params.GetIntArgs(c, "pageSize"),
+		Where: where,
+		WhereArgs: whereArgs,
+	}
+
+	permissions, pagination := srv.Permissions.FindWhere(pageQuery)
+	pagination.SetData(permissions)
+	result.Result = pagination
 }
 
 // GetPermissionAction get a permission.

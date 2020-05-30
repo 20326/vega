@@ -38,7 +38,7 @@ func NewHandlers(r *gin.Engine) {
 	consoleGroup.PUT("/settings/:id", setting.AddSettingAction)
 	consoleGroup.DELETE("/settings/:id", setting.DeleteSettingAction)
 
-	consoleGroup.GET("/permissions", permission.GetPermissionAction)
+	consoleGroup.GET("/permissions", permission.GetPermissionsAction)
 	consoleGroup.POST("/permissions", permission.AddPermissionAction)
 	consoleGroup.GET("/permissions/:id", permission.GetPermissionAction)
 	consoleGroup.PUT("/permissions/:id", permission.UpdatePermissionAction)

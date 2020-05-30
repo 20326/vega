@@ -331,11 +331,11 @@ func UserInfoAction(c *gin.Context) {
 
 	//for _, roleModel := range roleModels {
 	//
-	//	log.Warn().Msgf("roleModel Permissionissions:  %s  ", len(roleModel.Permissionissions))
-	//	//for _, permission := range roleModel.Permissionissions {
+	//	log.Warn().Msgf("roleModel Permissions:  %s  ", len(roleModel.Permissions))
+	//	//for _, permission := range roleModel.Permissions {
 	//	//}
 	//
-	//	//permissionModels := service.Permissionission.GetPermissionissions()
+	//	//permissionModels := service.Permissionission.GetPermissions()
 	//	//
 	//	//for _, permissionModel := range permissionModels {
 	//	//	permission := &model.ConsolePermissionission{
@@ -376,7 +376,7 @@ func UserInfoAction(c *gin.Context) {
 		"lastLoginTime": user.LoginAt,
 		"roleId":        "admin",
 		"role": map[string]interface{}{
-			"permissions": Permissionissions,
+			"permissions": Permissions,
 		},
 	}
 	result.Msg = "success"

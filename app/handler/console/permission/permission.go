@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/20326/vega/pkg/params"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
+	"github.com/20326/vega/pkg/params"
 	"github.com/20326/vega/pkg/render"
 	"github.com/gin-gonic/gin"
 )
@@ -30,8 +30,8 @@ func GetPermissionsAction(c *gin.Context) {
 		WhereArgs: whereArgs,
 	}
 
-	permissions, pagination := srv.Permissions.FindWhere(pageQuery)
-	pagination.SetData(permissions)
+	_, pagination := srv.Permissions.FindWhere(pageQuery)
+	pagination.SetData(Permissions)
 	result.Result = pagination
 }
 

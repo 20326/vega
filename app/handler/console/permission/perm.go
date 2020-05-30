@@ -1,4 +1,4 @@
-package user
+package permission
 
 var Permissions = []map[string]interface{}{
 	{

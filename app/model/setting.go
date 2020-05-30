@@ -18,11 +18,20 @@ type (
 		// Find returns a setting from the datastore.
 		Find(context.Context, uint64) (*Setting, error)
 
+		// Find returns a setting from the datastore.
+		FindName(context.Context, string) (*Setting, error)
+
+		// Find returns a setting from the datastore.
+		FindLike(context.Context, string) ([]*Setting, error)
+
 		// List returns a list of settings from the datastore.
 		List(context.Context) ([]*Setting, error)
 
 		// Update persists a setting to the datastore.
 		Update(context.Context, *Setting) error
+
+		// Updates persists a setting to the datastore.
+		Updates(context.Context, []*Setting) error
 
 		// Delete deletes a setting from the datastore.
 		Delete(context.Context, uint64) error

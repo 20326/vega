@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
@@ -42,6 +43,8 @@ func GetSettingAction(c *gin.Context) {
 	idArg := c.Param("id")
 	id, err := strconv.ParseUint(idArg, 10, 64)
 	if nil != err {
+		// ID or Category
+
 		result.Error(err)
 
 		return
@@ -75,6 +78,47 @@ func DeleteSettingAction(c *gin.Context) {
 	if err := srv.Settings.Delete(c, id); nil != err {
 		result.Error(err)
 
+	}
+}
+
+// UpdateSettingsAction updates a group settings.
+func UpdateSettingsAction(c *gin.Context) {
+	result := render.NewResult()
+	defer c.JSON(http.StatusOK, result)
+
+	args := map[string]interface{}{}
+	if err := c.BindJSON(&args); nil != err {
+		result.Error(err)
+		return
+	}
+
+	groupArg := c.Param("group")
+
+	var basics []*model.Setting
+	for k, v := range args {
+		if !strings.HasPrefix(k, groupArg) {
+			continue
+		}
+		var value interface{}
+		switch v.(type) {
+		case bool:
+			value = strconv.FormatBool(v.(bool))
+		case float64:
+			value = strconv.FormatFloat(v.(float64), 'f', 0, 64)
+		default:
+			value = strings.TrimSpace(v.(string))
+		}
+
+		basic := &model.Setting{
+			Name:  k,
+			Value: value.(string),
+		}
+		basics = append(basics, basic)
+	}
+
+	srv := service.FromContext(c)
+	if err := srv.Settings.Updates(c, basics); nil != err {
+		result.Error(err)
 	}
 }
 

@@ -31,6 +31,26 @@ func (s *settingService) Find(ctx context.Context, id uint64) (*model.Setting, e
 	return out, nil
 }
 
+// Find returns a setting from the datastore.
+func (s *settingService) FindName(ctx context.Context, name string) (*model.Setting, error) {
+	out := &model.Setting{}
+
+	if err := s.db.Where("`name` = ?", name).First(out).Error; nil != err {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Find returns a setting from the datastore.
+func (s *settingService) FindLike(ctx context.Context, like string) ([]*model.Setting, error) {
+	var out []*model.Setting
+
+	if err := s.db.Where(" `name` LIKE ? ", like+"%").Find(&out).Error; nil != err {
+		return nil, err
+	}
+	return out, nil
+}
+
 // List returns a list of settings from the datastore.
 func (s *settingService) List(ctx context.Context) ([]*model.Setting, error) {
 	var err error
@@ -77,6 +97,35 @@ func (s *settingService) Update(ctx context.Context, setting *model.Setting) err
 	if err = tx.Save(setting).Error; nil != err {
 		return err
 	}
+	return nil
+}
+
+// Update persists an updated setting to the datastore. col map[string]interface{}
+func (s *settingService) Updates(ctx context.Context, settings []*model.Setting) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	var err error
+	tx := s.db.Begin()
+	for _, setting := range settings {
+		// add exists
+		if _, err = s.FindName(ctx, setting.Name); nil != err {
+			if err := tx.Create(setting).Error; nil != err {
+				continue
+			}
+		} else {
+			if err := tx.Model(&model.Setting{}).
+				Where("`name` = ?", setting.Name).
+				Select("value").
+				Updates(map[string]interface{}{"value": setting.Value}).Error; nil != err {
+				tx.Rollback()
+
+				return err
+			}
+		}
+	}
+	tx.Commit()
+
 	return nil
 }
 

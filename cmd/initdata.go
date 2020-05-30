@@ -67,7 +67,7 @@ func initData(srv *service.Service, data *config.InitData) {
 
 		for _, actionItem := range permItem.Actions {
 			action := model.Action{
-				Action:   actionItem.Action,
+				Name:   actionItem.Name,
 				Describe: actionItem.Describe,
 			}
 			action.ID = actionID

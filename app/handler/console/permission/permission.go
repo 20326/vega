@@ -30,8 +30,9 @@ func GetPermissionsAction(c *gin.Context) {
 		WhereArgs: whereArgs,
 	}
 
-	_, pagination := srv.Permissions.FindWhere(pageQuery)
-	pagination.SetData(Permissions)
+	permissions, pagination := srv.Permissions.FindWhere(pageQuery)
+
+	pagination.SetData(permissions)
 	result.Result = pagination
 }
 

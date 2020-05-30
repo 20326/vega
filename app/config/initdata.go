@@ -9,9 +9,8 @@ type Resource struct {
 
 type Action struct {
 	ID           string
-	Action       string
+	Name         string
 	Describe     string
-	Path         string
 	Resources    []Resource
 	DefaultCheck bool
 	Status       int

@@ -12,18 +12,16 @@ Permissions:
       -
         Name: add
         Describe: 新建
-        Path: /api/console/permissions
         Resources:
           -
             Method: POST
             Path: /api/console/permissions
           -
             Method: PUT
-            Path: /api/console/users/:id
+            Path: /api/console/permissions/:id
       -
         Name: get
         Describe: 查询
-        Path: /api/console/permissions
         Resources:
           -
             Method: GET
@@ -38,7 +36,6 @@ Permissions:
       -
         Name: add
         Describe: 新建
-        Path: /api/console/users
         Resources:
           -
             Method: POST
@@ -48,7 +45,6 @@ Permissions:
       -
         Name: get
         Describe: 查询
-        Path: /api/console/users
         Resources:
           -
             Method: GET

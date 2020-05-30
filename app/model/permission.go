@@ -10,6 +10,7 @@ type (
 	Permission struct {
 		Model
 
+		//Label     string     `gorm:"size:64" json:"label"`
 		Name         string   `gorm:"size:64" json:"name"`
 		Describe     string   `gorm:"size:256" json:"describe"`
 		Icon         string   `gorm:"size:32" json:"icon"`

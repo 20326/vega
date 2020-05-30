@@ -8,7 +8,7 @@ type (
 	Action struct {
 		Model
 
-		Action    string     `gorm:"size:256" json:"action"`
+		Name      string     `gorm:"size:256" json:"name"`
 		Describe  string     `gorm:"size:256" json:"describe"`
 		Resources []Resource `gorm:"many2many:action_resource;" json:"resources"`
 	}

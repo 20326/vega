@@ -39,7 +39,7 @@ func (s *permissionService) FindWhere(query model.PageQuery) (out []*model.Permi
 
 	var err error
 
-	tx := s.db.Model(&model.Permission{}).Preload("Actions")
+	tx := s.db.Model(&model.Permission{}).Preload("Actions.Resources")
 	if "" != query.Where {
 		tx = tx.Where(query.Where, query.WhereArgs...)
 	}

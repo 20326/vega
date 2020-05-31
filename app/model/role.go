@@ -9,8 +9,7 @@ type (
 		Model
 
 		Name        string       `gorm:"size:64" json:"name"`
-		Label 		string       `gorm:"size:64" json:"label"`
-		NickName    string       `gorm:"size:32" json:"nickName"`
+		Label       string       `gorm:"size:32" json:"label"`
 		Describe    string       `gorm:"size:256" json:"describe"`
 		CreateBy    string       `gorm:"size:64" json:"createBy"`
 		Deleted     int          `gorm:"default:0" json:"deleted"`

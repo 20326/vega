@@ -24,9 +24,9 @@ func GetRolesAction(c *gin.Context) {
 		comment := map[string]interface{}{
 			"id":   roleModel.ID,
 			"name": roleModel.Name,
-			"nickName": roleModel.NickName,
+			"label": roleModel.Label,
 			"describe": roleModel.Describe,
-			"permissions": Permissions,
+			"permissions": Permissions, //TODO
 		}
 
 		roles = append(roles, comment)

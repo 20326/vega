@@ -5,6 +5,7 @@
 Permissions:
   -
     Name: permission
+    Label: 权限管理
     Describe: 权限管理
     Icon: safety-certificate
     Path: /console/permissions
@@ -16,9 +17,6 @@ Permissions:
           -
             Method: POST
             Path: /api/console/permissions
-          -
-            Method: PUT
-            Path: /api/console/permissions/:id
       -
         Name: get
         Describe: 查询
@@ -26,12 +24,36 @@ Permissions:
           -
             Method: GET
             Path: /api/console/permissions
-
+      -
+        Name: edit
+        Describe: 修改
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/permissions
+          -
+            Method: PUT
+            Path: /api/console/permissions/:id
+      -
+        Name: query
+        Describe: 列表
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/permissions
+      -
+        Name: delete
+        Describe: 删除
+        Resources:
+          -
+            Method: DELETE
+            Path: /api/console/permissions/:id
   -
-    Name: users
+    Name: roles
+    Label: 角色管理
     Describe: 用户管理
     Icon: safety-certificate
-    Path: /console/users
+    Path: /console/roles
     Actions:
       -
         Name: add
@@ -39,13 +61,127 @@ Permissions:
         Resources:
           -
             Method: POST
-            Path: /api/console/users
-          - Method: PUT
-            Path: /api/console/users/:id
+            Path: /api/console/roles
       -
         Name: get
         Describe: 查询
         Resources:
           -
             Method: GET
-            Path: /api/console/users
+            Path: /api/console/roles
+      -
+        Name: edit
+        Describe: 修改
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/roles
+          -
+            Method: PUT
+            Path: /api/console/roles/:id
+      -
+        Name: query
+        Describe: 列表
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/roles
+      -
+        Name: delete
+        Describe: 删除
+        Resources:
+          -
+            Method: DELETE
+            Path: /api/console/roles/:id
+
+  -
+    Name: settings
+    Label: 系统设置
+    Describe: 系统设置
+    Icon: safety-certificate
+    Path: /console/settings
+    Actions:
+      -
+        Name: add
+        Describe: 新建
+        Resources:
+          -
+            Method: POST
+            Path: /api/console/settings
+      -
+        Name: get
+        Describe: 查询
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/settings
+      -
+        Name: edit
+        Describe: 修改
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/settings
+          -
+            Method: PUT
+            Path: /api/console/settings/:id
+      -
+        Name: query
+        Describe: 列表
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/settings
+      -
+        Name: delete
+        Describe: 删除
+        Resources:
+          -
+            Method: DELETE
+            Path: /api/console/settings
+
+  -
+    Name: account
+    Label: 帐户设置
+    Describe: 帐户设置
+    Icon: safety-certificate
+    Path: /console/account
+    Actions:
+      -
+        Name: add
+        Describe: 新建
+        Resources:
+          -
+            Method: POST
+            Path: /api/console/account
+      -
+        Name: get
+        Describe: 查询
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/account
+      -
+        Name: edit
+        Describe: 修改
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/account
+          -
+            Method: PUT
+            Path: /api/console/account/:id
+      -
+        Name: query
+        Describe: 列表
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/account
+      -
+        Name: delete
+        Describe: 删除
+        Resources:
+          -
+            Method: DELETE
+            Path: /api/console/account/:id

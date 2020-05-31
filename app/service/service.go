@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	ContextServiceKey = "serviceCtx"
+	ContextServiceKey = "vega.run.serviceCtx"
 )
 
 type (

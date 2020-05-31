@@ -57,6 +57,7 @@ func initData(srv *service.Service, data *config.InitData) {
 	for _, permItem := range data.Permissions {
 		perm := &model.Permission{
 			Name:     permItem.Name,
+			Label:    permItem.Label,
 			Describe: permItem.Describe,
 			Icon:     permItem.Icon,
 			Path:     permItem.Path,
@@ -67,7 +68,7 @@ func initData(srv *service.Service, data *config.InitData) {
 
 		for _, actionItem := range permItem.Actions {
 			action := model.Action{
-				Name:   actionItem.Name,
+				Name:     actionItem.Name,
 				Describe: actionItem.Describe,
 			}
 			action.ID = actionID

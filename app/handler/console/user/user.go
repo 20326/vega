@@ -28,7 +28,7 @@ func GetUsersAction(c *gin.Context) {
 		whereArgs = append(whereArgs, "%"+name+"%", "%"+name+"%")
 	}
 
-	role := c.Query("role")
+	role := c.Query("role[]")
 	if "" != role {
 		where += " `role` = ? "
 		whereArgs = append(whereArgs, role)

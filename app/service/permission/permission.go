@@ -43,9 +43,11 @@ func (s *permissionService) FindWhere(query model.PageQuery) (out []*model.Permi
 	if "" != query.Where {
 		tx = tx.Where(query.Where, query.WhereArgs...)
 	}
+	if query.PageSize >0 && query.PageNo >0 {
+		tx = tx.Offset(offset).Limit(query.PageSize)
+	}
 
-	if err = tx.Count(&count).Offset(offset).Limit(query.PageSize).
-		Order("`id` DESC").Find(&out).Error; nil != err {
+	if err = tx.Count(&count).Order("`id` DESC").Find(&out).Error; nil != err {
 	}
 
 	pagination = pagination.NewPagination(query.PageNo, query.PageSize, count)

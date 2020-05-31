@@ -20,6 +20,7 @@ type Action struct {
 type Permission struct {
 	ID           string
 	Name         string
+	Label        string
 	Describe     string
 	Icon         string
 	Path         string
@@ -32,6 +33,7 @@ type Permission struct {
 type Role struct {
 	ID           string
 	Name         string
+	Label        string
 	Describe     string
 }
 

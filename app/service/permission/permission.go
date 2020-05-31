@@ -26,7 +26,7 @@ type permissionService struct {
 func (s *permissionService) Find(ctx context.Context, id uint64) (*model.Permission, error) {
 	out := &model.Permission{}
 
-	if err := s.db.First(out, id).Error; nil != err {
+	if err := s.db.Preload("Actions.Resources").First(out, id).Error; nil != err {
 		return nil, err
 	}
 	return out, nil
@@ -60,7 +60,9 @@ func (s *permissionService) List(ctx context.Context) ([]*model.Permission, erro
 	var err error
 	var out []*model.Permission
 
-	if err = s.db.Model(&model.Permission{}).Order("`id` DESC").Find(&out).Error; nil != err {
+	if err = s.db.Model(&model.Permission{}).
+		Preload("Actions.Resources").
+		Order("`id` DESC").Find(&out).Error; nil != err {
 	}
 
 	return out, err

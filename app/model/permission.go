@@ -13,7 +13,7 @@ type (
 		Name         string   `gorm:"size:64" json:"name"`
 		Label        string   `gorm:"size:64" json:"label"`
 		Describe     string   `gorm:"size:256" json:"describe"`
-		Icon         string   `gorm:"size:32" json:"icon"`
+		Icon         string   `gorm:"size:64" json:"icon"`
 		Path         string   `gorm:"size:256" json:"path"`
 		Actions      []Action `gorm:"many2many:permission_action;" json:"actions"`
 		DefaultCheck bool     `gorm:"default:false" json:"defaultCheck"`

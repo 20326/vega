@@ -21,15 +21,16 @@ func GetRolesAction(c *gin.Context) {
 
 	var roles []interface{}
 	for _, roleModel := range roleModels {
-		comment := map[string]interface{}{
-			"id":   roleModel.ID,
-			"name": roleModel.Name,
-			"label": roleModel.Label,
-			"describe": roleModel.Describe,
-			"permissions": Permissions, //TODO
+		permissions, _ := srv.Permissions.List(c) //TODO
+		role := map[string]interface{}{
+			"id":          roleModel.ID,
+			"name":        roleModel.Name,
+			"label":       roleModel.Label,
+			"describe":    roleModel.Describe,
+			"permissions": permissions,
 		}
 
-		roles = append(roles, comment)
+		roles = append(roles, role)
 	}
 
 	data := map[string]interface{}{}

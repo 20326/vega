@@ -4,11 +4,11 @@
 
 Permissions:
   -
-    Name: permission
+    Name: system.permission
     Label: 权限管理
     Describe: 权限管理
     Icon: safety-certificate
-    Path: /console/permissions
+    Path: /console/system/permissions
     Actions:
       -
         Name: add
@@ -49,11 +49,11 @@ Permissions:
             Method: DELETE
             Path: /api/console/permissions/:id
   -
-    Name: roles
+    Name: system.roles
     Label: 角色管理
-    Describe: 用户管理
+    Describe: 角色管理
     Icon: safety-certificate
-    Path: /console/roles
+    Path: /console/system/roles
     Actions:
       -
         Name: add
@@ -95,11 +95,56 @@ Permissions:
             Path: /api/console/roles/:id
 
   -
-    Name: settings
+    Name: system.users
+    Label: 用户管理
+    Describe: 用户管理
+    Icon: safety-certificate
+    Path: /console/system/users
+    Actions:
+      -
+        Name: add
+        Describe: 新建
+        Resources:
+          -
+            Method: POST
+            Path: /api/console/users
+      -
+        Name: get
+        Describe: 查询
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/users
+      -
+        Name: edit
+        Describe: 修改
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/users
+          -
+            Method: PUT
+            Path: /api/console/users/:id
+      -
+        Name: query
+        Describe: 列表
+        Resources:
+          -
+            Method: GET
+            Path: /api/console/users
+      -
+        Name: delete
+        Describe: 删除
+        Resources:
+          -
+            Method: DELETE
+            Path: /api/console/users/:id
+  -
+    Name: system.settings
     Label: 系统设置
     Describe: 系统设置
     Icon: safety-certificate
-    Path: /console/settings
+    Path: /console/system/settings
     Actions:
       -
         Name: add
@@ -141,7 +186,7 @@ Permissions:
             Path: /api/console/settings
 
   -
-    Name: account
+    Name: account.space
     Label: 帐户设置
     Describe: 帐户设置
     Icon: safety-certificate

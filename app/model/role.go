@@ -12,6 +12,7 @@ type (
 		Label       string       `gorm:"size:32" json:"label"`
 		Describe    string       `gorm:"size:256" json:"describe"`
 		CreateBy    string       `gorm:"size:64" json:"createBy"`
+		Status       int        `gorm:"default:1" json:"status"`
 		Deleted     int          `gorm:"default:0" json:"deleted"`
 		Permissions []Permission `json:"permissions"`
 	}

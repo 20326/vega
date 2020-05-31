@@ -8,8 +8,8 @@ type (
 	Role struct {
 		Model
 
-		Name        string       `gorm:"size:64" json:"name"`
-		Label       string       `gorm:"size:32" json:"label"`
+		Name        string       `gorm:"size:64;unique_index" json:"name"`
+		Label       string       `gorm:"size:64" json:"label"`
 		Describe    string       `gorm:"size:256" json:"describe"`
 		CreateBy    string       `gorm:"size:64" json:"createBy"`
 		Status       int        `gorm:"default:1" json:"status"`

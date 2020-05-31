@@ -8,17 +8,9 @@ type (
 	Setting struct {
 		Model
 
-		Name     string `sql:"index" gorm:"size:64" json:"name"`
+		Name     string `sql:"index" gorm:"size:64;unique_index" json:"name"`
 		Value    string `gorm:"type:text" json:"value"`
 		Describe string `gorm:"size:text" json:"describe"`
-	}
-
-	// ConsoleSetting represents console user.
-	ConsoleSetting struct {
-		ID    uint64 `json:"id"`
-		Name  string `json:"name"`
-		Value string `json:"value"`
-		Desc  string `json:"desc"`
 	}
 
 	// SettingService defines operations for working with system settings.

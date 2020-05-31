@@ -21,11 +21,11 @@ type (
 	User struct {
 		Model
 
-		Username     string     `gorm:"size:32" json:"username"`
-		Nickname     string     `gorm:"size:32" json:"nickname"`
+		Username     string     `gorm:"size:64" json:"username"`
+		Nickname     string     `gorm:"size:64" json:"nickname"`
 		Avatar       string     `gorm:"size:255" json:"avatar"`
 		BIO          string     `gorm:"size:512" json:"bio"`
-		Locale       string     `gorm:"size:32" json:"locale"`
+		Locale       string     `gorm:"size:64" json:"locale"`
 		Password     string     `json:"password,omitempty"`
 		PasswordHash string     `gorm:"size:64" json:"-"`
 		Email        string     `gorm:"size:64" json:"email"`

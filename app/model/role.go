@@ -22,6 +22,9 @@ type (
 		// Find returns a role from the datastore.
 		Find(context.Context, uint64) (*Role, error)
 
+		// FindName returns a role from the datastore.
+		FindName(context.Context, string) (*Role, error)
+
 		// List returns a list of roles from the datastore.
 		List(context.Context) ([]*Role, error)
 

@@ -31,10 +31,11 @@ func GetUsersAction(c *gin.Context) {
 		whereArgs = append(whereArgs, "%"+name+"%", "%"+name+"%")
 	}
 
-	//role := c.Query("role[]")
-	//if "" != role {
-	//	where += " `role` = ? "
-	//	whereArgs = append(whereArgs, role)
+	roles := c.QueryArray("role[]")
+	print(roles)
+	//if 0 < len(roles) {
+	//	where += " `roles` IN (?) "
+	//	whereArgs = append(whereArgs, roles)
 	//}
 
 	status := params.GetIntArgs(c, "status")
@@ -51,16 +52,6 @@ func GetUsersAction(c *gin.Context) {
 	}
 
 	users, pagination := srv.Users.FindWhere(pageQuery)
-
-	//var users []*model.ConsoleUser
-	//for _, userModel := range userModels {
-	//	comment := &model.ConsoleUser{
-	//		ID:   userModel.ID,
-	//		Name: userModel.Name,
-	//	}
-	//
-	//	users = append(users, comment)
-	//}
 
 	pagination.SetData(users)
 	result.Result = pagination
@@ -151,6 +142,19 @@ func UpdateUserAction(c *gin.Context) {
 		oldUser.Token = uuid.NewV4().String()
 	}
 	oldUser.Password = ""
+
+	// 清除用户角色相关性
+	roles := []*model.Role{}
+	for _, roleName := range user.RoleList {
+		role, _ := srv.Roles.FindName(c, roleName)
+		if nil != role {
+			roles = append(roles, role)
+		}
+	}
+	if 0 < len(roles) {
+		srv.Users.RelatedClear(c, oldUser)
+		oldUser.Roles = roles
+	}
 
 	if err := srv.Users.Update(c, oldUser); nil != err {
 		result.Error(err)

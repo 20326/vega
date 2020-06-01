@@ -26,7 +26,7 @@ type (
 		Avatar       string     `gorm:"size:255" json:"avatar"`
 		BIO          string     `gorm:"size:512" json:"bio"`
 		Locale       string     `gorm:"size:64" json:"locale"`
-		Password     string     `json:"password,omitempty"`
+		Password     string     `gorm:"-" json:"password,omitempty"`
 		PasswordHash string     `gorm:"size:64" json:"-"`
 		Email        string     `gorm:"size:64" json:"email"`
 		Phone        string     `gorm:"size:16" json:"phone"`
@@ -37,8 +37,8 @@ type (
 		Refresh      string     `gorm:"size:255" json:"-"`
 		Expiry       int64      `gorm:"size:255" json:"-"`
 		Hash         string     `gorm:"size:64" json:"-"`
-
-		Roles []Role `json:"roles" gorm:"many2many:user_role;"`
+		Roles        []*Role    `gorm:"many2many:user_role;association_jointable_foreignkey:role_id" json:"roles"`
+		RoleList     []string   `gorm:"-" json:"roleList" `
 	}
 
 	// UserService defines operations for working with users.
@@ -72,6 +72,9 @@ type (
 
 		// Count returns a count of users.
 		Count(context.Context) (int, error)
+
+		// RelatedClear returns a user from the datastore by token.
+		RelatedClear(context.Context, *User)
 	}
 )
 
@@ -89,5 +92,12 @@ func (u *User) Validate() error {
 		return errUsernameChar
 	default:
 		return nil
+	}
+}
+
+func (u *User) FillRoleList() {
+	u.RoleList = []string{}
+	for _, role := range u.Roles{
+		u.RoleList = append(u.RoleList, role.Name)
 	}
 }

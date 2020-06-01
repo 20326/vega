@@ -31,6 +31,16 @@ func (s *roleService) Find(ctx context.Context, id uint64) (*model.Role, error) 
 	return out, nil
 }
 
+// FindName returns a role from the datastore.
+func (s *roleService) FindName(ctx context.Context, name string) (*model.Role, error) {
+	out := &model.Role{}
+
+	if err := s.db.Where("`name` = ?", name).First(out).Error; nil != err {
+		return nil, err
+	}
+	return out, nil
+}
+
 // List returns a list of roles from the datastore.
 func (s *roleService) List(ctx context.Context) ([]*model.Role, error) {
 	var err error

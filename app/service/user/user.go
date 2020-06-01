@@ -61,12 +61,16 @@ func (s *userService) FindWhere(query model.PageQuery) (out []*model.User, pagin
 
 	var err error
 
-	tx := s.db.Model(&model.User{})
+	tx := s.db.Model(&model.User{}).Preload("Roles")
 	if "" != query.Where {
 		tx = tx.Where(query.Where, query.WhereArgs...)
 	}
 	if err = tx.Count(&count).Offset(offset).Limit(query.PageSize).
 		Order("`id` DESC").Find(&out).Error; nil != err {
+	}
+
+	for _, user := range out {
+		user.FillRoleList()
 	}
 
 	pagination = pagination.NewPagination(query.PageNo, query.PageSize, count)
@@ -79,7 +83,11 @@ func (s *userService) List(ctx context.Context) ([]*model.User, error) {
 	var err error
 	var out []*model.User
 
-	if err = s.db.Model(&model.User{}).Order("`id` DESC").Find(&out).Error; nil != err {
+	if err = s.db.Model(&model.User{}).Preload("Roles").Order("`id` DESC").Find(&out).Error; nil != err {
+	}
+
+	for _, user := range out {
+		user.FillRoleList()
 	}
 
 	return out, err
@@ -159,6 +167,11 @@ func (s *userService) Delete(ctx context.Context, id uint64) error {
 	tx.Commit()
 
 	return nil
+}
+
+// RelatedClear will clear users.
+func (s *userService) RelatedClear(ctx context.Context, user *model.User) {
+	s.db.Model(&user).Association("Roles").Clear()
 }
 
 // Count returns a count of active users.

@@ -365,6 +365,7 @@ func UserInfoAction(c *gin.Context) {
 		"username": user.Username,
 	}).Info("user get info success")
 
+	permissions, _ := srv.Permissions.List(c) //TODO
 	data := map[string]interface{}{
 		"id":            strconv.Itoa(int(user.ID)),
 		"name":          user.Username,
@@ -376,7 +377,7 @@ func UserInfoAction(c *gin.Context) {
 		"lastLoginTime": user.LoginAt,
 		"roleId":        "admin",
 		"role": map[string]interface{}{
-			"permissions": Permissions,
+			"permissions": permissions,
 		},
 	}
 	result.Msg = "success"

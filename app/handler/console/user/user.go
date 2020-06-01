@@ -2,8 +2,11 @@ package user
 
 import (
 	"errors"
+	"github.com/20326/vega/pkg/crypto"
+	uuid "github.com/satori/go.uuid"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
@@ -28,11 +31,11 @@ func GetUsersAction(c *gin.Context) {
 		whereArgs = append(whereArgs, "%"+name+"%", "%"+name+"%")
 	}
 
-	role := c.Query("role[]")
-	if "" != role {
-		where += " `role` = ? "
-		whereArgs = append(whereArgs, role)
-	}
+	//role := c.Query("role[]")
+	//if "" != role {
+	//	where += " `role` = ? "
+	//	whereArgs = append(whereArgs, role)
+	//}
 
 	status := params.GetIntArgs(c, "status")
 	if 0 < status {
@@ -128,7 +131,28 @@ func UpdateUserAction(c *gin.Context) {
 	}
 
 	srv := service.FromContext(c)
-	if err := srv.Users.Update(c, user); nil != err {
+	oldUser, err := srv.Users.Find(c, user.ID)
+	if nil == oldUser {
+		result.Error(err)
+
+		return
+	}
+	// TODO, 检查Username Nickname 重复, unique_index
+	oldUser.Username = user.Username
+	oldUser.Nickname = user.Nickname
+	oldUser.Phone = user.Phone
+	oldUser.Email = user.Email
+	oldUser.UpdatedAt = time.Now()
+	oldUser.BIO = user.BIO
+	oldUser.Status = user.Status
+
+	if 5 <= len(user.Password) {
+		oldUser.PasswordHash = crypto.HashAndSalt([]byte(user.Password))
+		oldUser.Token = uuid.NewV4().String()
+	}
+	oldUser.Password = ""
+
+	if err := srv.Users.Update(c, oldUser); nil != err {
 		result.Error(err)
 	}
 }
@@ -144,6 +168,16 @@ func AddUserAction(c *gin.Context) {
 
 		return
 	}
+	// password
+	if 5 <= len(user.Password) {
+		user.PasswordHash = crypto.HashAndSalt([]byte(user.Password))
+		user.Token = uuid.NewV4().String()
+	} else {
+		result.Error(errors.New("password required"))
+
+		return
+	}
+	user.Password = ""
 
 	srv := service.FromContext(c)
 	if err := srv.Users.Create(c, user); nil != err {

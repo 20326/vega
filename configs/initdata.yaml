@@ -1,10 +1,45 @@
 ###############################################################
 #                   Vega init data                            #
 ###############################################################
-
+# dashboard
 Permissions:
   -
-    Name: system.permission
+    Name: dashboard
+    Label: 仪表盘
+    Describe: 仪表盘
+    Icon: safety-certificate
+    Path: /dashboard
+    Actions:
+      - Name: add
+        Describe: 新建
+        Resources:
+          - Method: POST
+            Path: /api/dashboard
+      - Name: get
+        Describe: 查询
+        Resources:
+          - Method: GET
+            Path: /api/dashboard
+      - Name: edit
+        Describe: 修改
+        Resources:
+          - Method: GET
+            Path: /api/dashboard
+          - Method: PUT
+            Path: /api/dashboard/:id
+      - Name: query
+        Describe: 列表
+        Resources:
+          - Method: GET
+            Path: /api/dashboard
+      - Name: delete
+        Describe: 删除
+        Resources:
+          - Method: DELETE
+            Path: /api/dashboard/:id
+
+  -
+    Name: system:permission
     Label: 权限管理
     Describe: 权限管理
     Icon: safety-certificate
@@ -48,8 +83,9 @@ Permissions:
           -
             Method: DELETE
             Path: /api/console/permissions/:id
+
   -
-    Name: system.roles
+    Name: system:roles
     Label: 角色管理
     Describe: 角色管理
     Icon: safety-certificate
@@ -95,7 +131,7 @@ Permissions:
             Path: /api/console/roles/:id
 
   -
-    Name: system.users
+    Name: system:users
     Label: 用户管理
     Describe: 用户管理
     Icon: safety-certificate
@@ -140,7 +176,7 @@ Permissions:
             Method: DELETE
             Path: /api/console/users/:id
   -
-    Name: system.settings
+    Name: system:settings
     Label: 系统设置
     Describe: 系统设置
     Icon: safety-certificate
@@ -186,7 +222,7 @@ Permissions:
             Path: /api/console/settings
 
   -
-    Name: account.space
+    Name: account
     Label: 帐户设置
     Describe: 帐户设置
     Icon: safety-certificate

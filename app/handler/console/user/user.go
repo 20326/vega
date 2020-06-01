@@ -2,17 +2,18 @@ package user
 
 import (
 	"errors"
-	"github.com/20326/vega/pkg/crypto"
-	uuid "github.com/satori/go.uuid"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service"
+	"github.com/20326/vega/pkg/crypto"
 	"github.com/20326/vega/pkg/params"
 	"github.com/20326/vega/pkg/render"
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 )
 
 // GetUsersAction gets users.
@@ -22,36 +23,30 @@ func GetUsersAction(c *gin.Context) {
 
 	srv := service.FromContext(c)
 
-	where := ""
+	where := []string{}
 	whereArgs := []interface{}{}
 
 	name := c.Query("name")
 	if "" != name {
-		where += " `username` LIKE ? OR `nickname` LIKE ? "
+		where = append(where, "(`username` LIKE ? OR `nickname` LIKE ?)")
 		whereArgs = append(whereArgs, "%"+name+"%", "%"+name+"%")
 	}
 
-	roles := c.QueryArray("role[]")
-	print(roles)
-	//if 0 < len(roles) {
-	//	where += " `roles` IN (?) "
-	//	whereArgs = append(whereArgs, roles)
-	//}
-
 	status := params.GetIntArgs(c, "status")
 	if 0 < status {
-		where += " `status` = ? "
+		where = append(where, "`status` = ?")
 		whereArgs = append(whereArgs, status)
 	}
 
+	roles := c.QueryArray("role[]")
+
 	pageQuery := model.PageQuery{
-		PageNo: params.GetIntArgs(c, "pageNo"),
-		PageSize: params.GetIntArgs(c, "pageSize"),
-		Where: where,
+		PageNo:    params.GetIntArgs(c, "pageNo"),
+		PageSize:  params.GetIntArgs(c, "pageSize"),
+		Where:     strings.Join(where, " AND "),
 		WhereArgs: whereArgs,
 	}
-
-	users, pagination := srv.Users.FindWhere(pageQuery)
+	users, pagination := srv.Users.FindWhere(pageQuery, roles)
 
 	pagination.SetData(users)
 	result.Result = pagination
@@ -145,8 +140,8 @@ func UpdateUserAction(c *gin.Context) {
 
 	// 清除用户角色相关性
 	roles := []*model.Role{}
-	for _, roleName := range user.RoleList {
-		role, _ := srv.Roles.FindName(c, roleName)
+	for _, roleID := range user.RoleList {
+		role, _ := srv.Roles.Find(c, roleID)
 		if nil != role {
 			roles = append(roles, role)
 		}

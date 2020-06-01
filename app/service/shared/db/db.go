@@ -55,5 +55,6 @@ func AutoMigrateDB(db *gorm.DB) error {
 		new(model.Permission),
 		new(model.Role),
 		new(model.User),
+		new(model.UserRole),
 	).Error
 }

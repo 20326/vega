@@ -37,8 +37,13 @@ type (
 		Refresh      string     `gorm:"size:255" json:"-"`
 		Expiry       int64      `gorm:"size:255" json:"-"`
 		Hash         string     `gorm:"size:64" json:"-"`
-		Roles        []*Role    `gorm:"many2many:user_role;association_jointable_foreignkey:role_id" json:"roles"`
-		RoleList     []string   `gorm:"-" json:"roleList" `
+		Roles        []*Role    `gorm:"many2many:user_roles;association_jointable_foreignkey:role_id" json:"roles"`
+		RoleList     []uint64   `gorm:"-" json:"roleList" `
+	}
+
+	UserRole struct {
+		UserID uint64 `sql:"index"`
+		RoleID uint64 `sql:"index"`
 	}
 
 	// UserService defines operations for working with users.
@@ -53,7 +58,7 @@ type (
 		FindToken(context.Context, string) (*User, error)
 
 		// FindWhere returns a list of users from the datastore.
-		FindWhere(PageQuery) ([]*User, pagination.Pagination)
+		FindWhere(PageQuery, []string) ([]*User, pagination.Pagination)
 
 		// List returns a list of users from the datastore.
 		List(context.Context) ([]*User, error)
@@ -96,8 +101,8 @@ func (u *User) Validate() error {
 }
 
 func (u *User) FillRoleList() {
-	u.RoleList = []string{}
+	u.RoleList = []uint64{}
 	for _, role := range u.Roles{
-		u.RoleList = append(u.RoleList, role.Name)
+		u.RoleList = append(u.RoleList, role.ID)
 	}
 }

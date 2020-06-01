@@ -12,8 +12,9 @@ type (
 		Label       string       `gorm:"size:64" json:"label"`
 		Describe    string       `gorm:"size:256" json:"describe"`
 		CreateBy    string       `gorm:"size:64" json:"createBy"`
-		Status       int        `gorm:"default:1" json:"status"`
+		Status      int          `gorm:"default:1" json:"status"`
 		Deleted     int          `gorm:"default:0" json:"deleted"`
+		Users       []*User      `gorm:"many2many:user_roles;association_jointable_foreignkey:user_id" json:"users"`
 		Permissions []Permission `json:"permissions"`
 	}
 

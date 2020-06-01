@@ -55,13 +55,19 @@ func (s *userService) FindToken(ctx context.Context, token string) (*model.User,
 }
 
 // FindWhere returns a list of users by query params from the datastore.
-func (s *userService) FindWhere(query model.PageQuery) (out []*model.User, pagination pagination.Pagination) {
+func (s *userService) FindWhere(query model.PageQuery, roles []string) (out []*model.User, pagination pagination.Pagination) {
 	offset := (query.PageNo - 1) * query.PageSize
 	count := 0
 
 	var err error
 
 	tx := s.db.Model(&model.User{}).Preload("Roles")
+	if 0 < len(roles) {
+		tx = tx.Where("id IN (?)", s.db.Model(&model.UserRole{}).Select("user_id").Where("role_id IN (?)", roles).QueryExpr())
+		// tx = tx.Preload("Roles").Joins("INNER JOIN vega_user_role on vega_user_role.user_id = vega_users.id AND vega_user_role.role_id in (?)", roles)
+	} else {
+		tx = tx.Preload("Roles")
+	}
 	if "" != query.Where {
 		tx = tx.Where(query.Where, query.WhereArgs...)
 	}
@@ -69,9 +75,9 @@ func (s *userService) FindWhere(query model.PageQuery) (out []*model.User, pagin
 		Order("`id` DESC").Find(&out).Error; nil != err {
 	}
 
-	for _, user := range out {
-		user.FillRoleList()
-	}
+	//for _, user := range out {
+	//	user.FillRoleList()
+	//}
 
 	pagination = pagination.NewPagination(query.PageNo, query.PageSize, count)
 
@@ -83,12 +89,15 @@ func (s *userService) List(ctx context.Context) ([]*model.User, error) {
 	var err error
 	var out []*model.User
 
-	if err = s.db.Model(&model.User{}).Preload("Roles").Order("`id` DESC").Find(&out).Error; nil != err {
+	if err = s.db.Model(&model.User{}).
+		Preload("Roles").
+		Order("`id` DESC").
+		Find(&out).Error; nil != err {
 	}
 
-	for _, user := range out {
-		user.FillRoleList()
-	}
+	//for _, user := range out {
+	//	user.FillRoleList()
+	//}
 
 	return out, err
 }

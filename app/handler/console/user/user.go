@@ -38,6 +38,12 @@ func GetUsersAction(c *gin.Context) {
 		whereArgs = append(whereArgs, status)
 	}
 
+	phone := c.Query("phone")
+	if 0 < len(phone) {
+		where = append(where, "`phone` LIKE ?")
+		whereArgs = append(whereArgs, "%"+phone+"%")
+	}
+
 	roles := c.QueryArray("role[]")
 
 	pageQuery := model.PageQuery{

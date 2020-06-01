@@ -38,7 +38,7 @@ type (
 		Expiry       int64      `gorm:"size:255" json:"-"`
 		Hash         string     `gorm:"size:64" json:"-"`
 
-		// Role      []Role     `json:"role" gorm:"many2many:user_role;"`
+		Roles []Role `json:"roles" gorm:"many2many:user_role;"`
 	}
 
 	// UserService defines operations for working with users.

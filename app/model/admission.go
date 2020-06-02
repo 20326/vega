@@ -7,7 +7,7 @@ type (
 	// RoleService defines operations for working with system roles.
 	AdmissionService interface {
 		// LoadAllPolicy returns all policy from the datastore.
-		LoadAllPolicy(context.Context) error
+		LoadAllPolicy(context.Context, []*Role) error
 
 		// DeleteAllPolicy deletes policy from the datastore.
 		DeleteAllPolicy(context.Context) error

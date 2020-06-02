@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+
 	"github.com/20326/vega/app/config"
 	"github.com/20326/vega/app/model"
 	"github.com/20326/vega/app/service/action"
@@ -70,7 +72,7 @@ func NewService(config *config.Config, log *logrus.Logger) *Service {
 
 	// auto migrate
 
-	return &Service{
+	srv := &Service{
 		Log:         log,
 		Actions:     action.New(dbs),
 		Admissions:  admissions,
@@ -80,4 +82,10 @@ func NewService(config *config.Config, log *logrus.Logger) *Service {
 		Users:       user.New(dbs),
 		Settings:    setting.New(dbs),
 	}
+
+	var ctx = context.Background()
+	roleList, _ := srv.Roles.List(ctx)
+	_ = srv.Admissions.LoadAllPolicy(ctx, roleList)
+
+	return srv
 }

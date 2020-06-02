@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/20326/vega/app/handler/api"
 	"github.com/20326/vega/app/handler/console"
-
 	"github.com/gin-gonic/gin"
 )
 

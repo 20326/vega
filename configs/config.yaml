@@ -48,7 +48,7 @@ Redis:
 
 # Admission by casbin, store rule in sql db
 Admission:
-  CasbinModel: ./rbac_model.conf
+  CasbinModel: ./configs/rbac_model.conf
   TablePrefix:  vega_
   LogMode: true
 

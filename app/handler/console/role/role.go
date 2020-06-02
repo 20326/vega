@@ -109,7 +109,8 @@ func UpdateRoleAction(c *gin.Context) {
 
 	log.WithFields(logrus.Fields{
 		"action":   "UpdateRoleAction",
-		"role.Permissions": role.Permissions,
+		"role.Name": role.Name,
+		// "role.Permissions": role.Permissions,
 	}).Info("update role permissions")
 
 	var actionIds = mapset.NewSet()

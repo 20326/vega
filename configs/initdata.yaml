@@ -39,6 +39,31 @@ Permissions:
             Path: /api/dashboard/:id
 
   -
+    Name: system
+    Label: 系统管理
+    Describe: 系统管理
+    Icon: setting
+    Path: /console/system
+    Actions:
+      - Name: get
+        Describe: 查询
+        Resources:
+          - Method: GET
+            Path: /api/console/system
+      - Name: edit
+        Describe: 修改
+        Resources:
+          - Method: GET
+            Path: /api/console/system
+          - Method: PUT
+            Path: /api/console/system/:id
+      - Name: query
+        Describe: 列表
+        Resources:
+          - Method: GET
+            Path: /api/console/system
+
+  -
     Name: system:permission
     Label: 权限管理
     Describe: 权限管理

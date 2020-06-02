@@ -3,6 +3,7 @@ package model
 import (
 	"context"
 	"github.com/20326/vega/pkg/pagination"
+	mapset "github.com/deckarep/golang-set"
 )
 
 type (
@@ -15,10 +16,12 @@ type (
 		Describe     string   `gorm:"size:256" json:"describe"`
 		Icon         string   `gorm:"size:64" json:"icon"`
 		Path         string   `gorm:"size:256" json:"path"`
-		Actions      []Action `gorm:"many2many:permission_actions;" json:"actions"`
+		Actions      []*Action `gorm:"many2many:permission_actions;" json:"actions"`
 		DefaultCheck bool     `gorm:"default:false" json:"defaultCheck"`
 		Status       int      `gorm:"default:1" json:"status"`
 		Deleted      int      `gorm:"default:0" json:"deleted"`
+
+		Selected     []interface{}  `gorm:"-" json:"selected"` //selected actions
 	}
 
 	// PermissionService defines operations for working with system permissions.
@@ -42,3 +45,11 @@ type (
 		Create(context.Context, *Permission) error
 	}
 )
+
+func (p *Permission) GetActionIds() mapset.Set{
+	actionIds := mapset.NewSet()
+	for _, action := range p.Actions {
+		actionIds.Add(action.ID)
+	}
+	return actionIds
+}

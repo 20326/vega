@@ -49,6 +49,8 @@ func NewHandlers(r *gin.Engine) {
 	consoleGroup.GET("/users/:id", user.GetUserAction)
 	consoleGroup.PUT("/users/:id", user.UpdateUserAction)
 	consoleGroup.DELETE("/users/:id", user.DeleteUserAction)
+	consoleGroup.GET("/user/profile", user.GetCurrentUserAction)
+	consoleGroup.POST("/user/profile", user.UpdateCurrentUserAction)
 }
 
 // TODO uglify code

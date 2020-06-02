@@ -8,6 +8,7 @@ require (
 	github.com/casbin/gorm-adapter/v2 v2.1.0
 	github.com/cloudflare/tableflip v1.2.0
 	github.com/coreos/go-semver v0.3.0
+	github.com/deckarep/golang-set v1.7.1
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.8+incompatible

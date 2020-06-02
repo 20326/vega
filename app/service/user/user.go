@@ -26,7 +26,7 @@ type userService struct {
 func (s *userService) Find(ctx context.Context, id uint64) (*model.User, error) {
 	out := &model.User{}
 
-	if err := s.db.First(out, id).Error; nil != err {
+	if err := s.db.Preload("Roles").First(out, id).Error; nil != err {
 		return nil, err
 	}
 	return out, nil
@@ -36,7 +36,7 @@ func (s *userService) Find(ctx context.Context, id uint64) (*model.User, error) 
 func (s *userService) FindName(ctx context.Context, username string) (*model.User, error) {
 	out := &model.User{}
 
-	if err := s.db.Where("`username` = ?", username).First(out).Error; nil != err {
+	if err := s.db.Preload("Roles").Where("`username` = ?", username).First(out).Error; nil != err {
 		return nil, err
 	}
 
@@ -47,7 +47,7 @@ func (s *userService) FindName(ctx context.Context, username string) (*model.Use
 func (s *userService) FindToken(ctx context.Context, token string) (*model.User, error) {
 	out := &model.User{}
 
-	if err := s.db.Where("`token` = ?", token).First(out).Error; nil != err {
+	if err := s.db.Preload("Roles").Where("`token` = ?", token).First(out).Error; nil != err {
 		return nil, err
 	}
 
@@ -63,7 +63,8 @@ func (s *userService) FindWhere(query model.PageQuery, roles []string) (out []*m
 
 	tx := s.db.Model(&model.User{}).Preload("Roles")
 	if 0 < len(roles) {
-		tx = tx.Where("id IN (?)", s.db.Model(&model.UserRole{}).Select("user_id").Where("role_id IN (?)", roles).QueryExpr())
+		subQuery := s.db.Model(&model.UserRole{}).Select("user_id").Where("role_id IN (?)", roles).QueryExpr()
+		tx = tx.Where("id IN (?)", subQuery)
 		// tx = tx.Preload("Roles").Joins("INNER JOIN vega_user_role on vega_user_role.user_id = vega_users.id AND vega_user_role.role_id in (?)", roles)
 	} else {
 		tx = tx.Preload("Roles")
@@ -146,7 +147,7 @@ func (s *userService) Updates(ctx context.Context, user *model.User, values inte
 	defer s.mutex.Unlock()
 
 	tx := s.db.Begin()
-	if err := s.db.Model(&model.User{}).Updates(values).Error; nil != err {
+	if err := s.db.Model(user).Updates(values).Error; nil != err {
 		tx.Rollback()
 
 		return err

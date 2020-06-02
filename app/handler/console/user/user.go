@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 	"strings"
@@ -15,6 +16,31 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 )
+
+// GetUsersAction gets users.
+func GetCurrentUserAction(c *gin.Context) {
+	result := render.NewResult()
+	defer c.JSON(http.StatusOK, result)
+
+	srv := service.FromContext(c)
+	log := srv.GetLogger()
+
+	session := &model.SessionData{}
+	user, err := session.Get(c, srv.Users)
+	if nil != err {
+		result.Error(errors.New("session illegal"))
+		return
+	}
+	log.WithFields(logrus.Fields{
+		"action":   "GetCurrentUser",
+		"username": user.Username,
+	}).Info("get current user success")
+
+	user.FillRolePermissionList()
+
+	result.Msg = "success"
+	result.Result = user
+}
 
 // GetUsersAction gets users.
 func GetUsersAction(c *gin.Context) {
@@ -99,6 +125,47 @@ func DeleteUserAction(c *gin.Context) {
 	if err := srv.Users.Delete(c, id); nil != err {
 		result.Error(err)
 
+	}
+}
+
+// UpdateUserAction updates a user.
+func UpdateCurrentUserAction(c *gin.Context) {
+	result := render.NewResult()
+	defer c.JSON(http.StatusOK, result)
+
+	srv := service.FromContext(c)
+	log := srv.GetLogger()
+
+	session := &model.SessionData{}
+	currUser, err := session.Get(c, srv.Users)
+	if nil != err {
+		result.Error(errors.New("session illegal"))
+		return
+	}
+
+	arg := map[string]interface{}{}
+	if err := c.BindJSON(arg); nil != err {
+		result.Error(errors.New("parses update user request failed"))
+
+		return
+	}
+
+
+	log.WithFields(logrus.Fields{
+		"action":   "UpdateCurrentUserAction",
+		"username": currUser.Username,
+	}).Info("get current user success")
+
+
+	// TODO, 检查Username Nickname 重复, unique_index
+	currUser.Nickname = arg["username"].(string)
+	currUser.Phone = arg["phone"].(string)
+	currUser.Email = arg["email"].(string)
+	currUser.UpdatedAt = time.Now()
+	currUser.BIO = arg["bio"].(string)
+
+	if err := srv.Users.Update(c, currUser); nil != err {
+		result.Error(err)
 	}
 }
 

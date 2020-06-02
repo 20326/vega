@@ -1,6 +1,9 @@
 package model
 
-import "context"
+import (
+	"context"
+	"github.com/deckarep/golang-set"
+)
 
 type (
 	// Role represents a user role of the system.
@@ -14,14 +17,15 @@ type (
 		CreateBy    string        `gorm:"size:64" json:"createBy"`
 		Status      int           `gorm:"default:1" json:"status"`
 		Deleted     int           `gorm:"default:0" json:"deleted"`
-		Users       []*User       `gorm:"many2many:user_roles;association_jointable_foreignkey:user_id" json:"users"`
-		Permissions []*Permission `gorm:"many2many:role_permissions;association_jointable_foreignkey:permission_id" json:"permissions"`
+		Permissions []*Permission `gorm:"many2many:role_permissions;" json:"permissions"`
+		Actions     []*Action     `gorm:"many2many:role_actions;" json:"actions"`
+		// Users       []*User       `gorm:"many2many:user_roles;association_jointable_foreignkey:user_id" json:"users"`
 	}
 
-	RolePermissions struct {
+	RoleAction struct {
 		RoleID       uint64 `sql:"index"`
-		PermissionID uint64 `sql:"index"`
-		ActionsData  string `json:"actionsData"`
+		ActionID     uint64 `sql:"index"`
+		// PermissionID uint64 `sql:"index"`
 	}
 
 	// RoleService defines operations for working with system roles.
@@ -35,8 +39,11 @@ type (
 		// List returns a list of roles from the datastore.
 		List(context.Context) ([]*Role, error)
 
+		// Clear Related persists a role to the datastore.
+		RelatedClear(context.Context, *Role)
+
 		// Update persists a role to the datastore.
-		Update(context.Context, *Role) error
+		Update(ctx context.Context, role *Role, actionIDs []interface{}) error
 
 		// Delete deletes a role from the datastore.
 		Delete(context.Context, uint64) error
@@ -45,3 +52,11 @@ type (
 		Create(context.Context, *Role) error
 	}
 )
+
+func (u *Role) GetActionIds() mapset.Set{
+	actionIds := mapset.NewSet()
+	for _, action := range u.Actions {
+		actionIds.Add(action.ID)
+	}
+	return actionIds
+}

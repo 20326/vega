@@ -106,3 +106,10 @@ func (u *User) FillRoleList() {
 		u.RoleList = append(u.RoleList, role.ID)
 	}
 }
+
+func (u *User) FillRolePermissionList() {
+	u.RoleList = []uint64{}
+	for _, role := range u.Roles{
+		u.RoleList = append(u.RoleList, role.ID)
+	}
+}

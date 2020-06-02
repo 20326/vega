@@ -46,7 +46,7 @@ func (s *roleService) List(ctx context.Context) ([]*model.Role, error) {
 	var err error
 	var out []*model.Role
 
-	if err = s.db.Preload("Permissions.Actions.Resources").
+	if err = s.db.Preload("Permissions.Actions.Resources").Preload("Actions").
 		Model(&model.Role{}).
 		Order("`id` DESC").
 		Find(&out).Error; nil != err {
@@ -72,7 +72,7 @@ func (s *roleService) Create(ctx context.Context, role *model.Role) error {
 }
 
 // Update persists an updated role to the datastore. col map[string]interface{}
-func (s *roleService) Update(ctx context.Context, role *model.Role) error {
+func (s *roleService) Update(ctx context.Context, role *model.Role, actionIDs []interface{}) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -87,10 +87,32 @@ func (s *roleService) Update(ctx context.Context, role *model.Role) error {
 		}
 	}()
 
-	if err = tx.Save(role).Error; nil != err {
+	tx.Model(&role).Association("Actions").Clear()
+
+	if err = tx.Model(&model.Role{}).Where("`id` = ?", role.ID).Updates(map[string]interface{}{
+		"name":    role.Name,
+		"label":    role.Label,
+		"describe":    role.Describe,
+		"status":    role.Status,
+		}).Error; nil != err {
 		return err
 	}
+	for _, actionID := range actionIDs {
+		roleAction := &model.RoleAction{
+			RoleID: role.ID,
+			ActionID: uint64(actionID.(float64)),
+		}
+		if err := tx.Create(roleAction).Error; nil != err {
+			return err
+		}
+	}
+
 	return nil
+}
+
+// RelatedClear will clear permissions.
+func (s *roleService) RelatedClear(ctx context.Context, role *model.Role) {
+	s.db.Model(&role).Association("Actions").Clear()
 }
 
 // Delete deletes a role from the datastore.

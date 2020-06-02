@@ -17,21 +17,9 @@ func GetRolesAction(c *gin.Context) {
 	defer c.JSON(http.StatusOK, result)
 
 	srv := service.FromContext(c)
-	roleModels, _ := srv.Roles.List(c)
+	roles, _ := srv.Roles.List(c)
 
-	var roles []interface{}
-	for _, roleModel := range roleModels {
-		permissions, _ := srv.Permissions.List(c) //TODO
-		role := map[string]interface{}{
-			"id":          roleModel.ID,
-			"name":        roleModel.Name,
-			"label":       roleModel.Label,
-			"describe":    roleModel.Describe,
-			"permissions": permissions,
-		}
-
-		roles = append(roles, role)
-	}
+	// TODO get select actions data
 
 	data := map[string]interface{}{}
 	data["data"] = roles

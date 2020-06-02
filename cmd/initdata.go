@@ -73,7 +73,7 @@ func initData(srv *service.Service, data *config.InitData) {
 			}
 			action.ID = actionID
 			for _, resItem := range actionItem.Resources {
-				res := model.Resource{
+				res := &model.Resource{
 					ActionID: actionID,
 					Method:   resItem.Method,
 					Path:     resItem.Path,

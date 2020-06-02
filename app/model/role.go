@@ -8,14 +8,20 @@ type (
 	Role struct {
 		Model
 
-		Name        string       `gorm:"size:64;unique_index" json:"name"`
-		Label       string       `gorm:"size:64" json:"label"`
-		Describe    string       `gorm:"size:256" json:"describe"`
-		CreateBy    string       `gorm:"size:64" json:"createBy"`
-		Status      int          `gorm:"default:1" json:"status"`
-		Deleted     int          `gorm:"default:0" json:"deleted"`
-		Users       []*User      `gorm:"many2many:user_roles;association_jointable_foreignkey:user_id" json:"users"`
-		Permissions []Permission `json:"permissions"`
+		Name        string        `gorm:"size:64;unique_index" json:"name"`
+		Label       string        `gorm:"size:64" json:"label"`
+		Describe    string        `gorm:"size:256" json:"describe"`
+		CreateBy    string        `gorm:"size:64" json:"createBy"`
+		Status      int           `gorm:"default:1" json:"status"`
+		Deleted     int           `gorm:"default:0" json:"deleted"`
+		Users       []*User       `gorm:"many2many:user_roles;association_jointable_foreignkey:user_id" json:"users"`
+		Permissions []*Permission `gorm:"many2many:role_permissions;association_jointable_foreignkey:permission_id" json:"permissions"`
+	}
+
+	RolePermissions struct {
+		RoleID       uint64 `sql:"index"`
+		PermissionID uint64 `sql:"index"`
+		ActionsData  string `json:"actionsData"`
 	}
 
 	// RoleService defines operations for working with system roles.

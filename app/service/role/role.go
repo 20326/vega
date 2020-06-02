@@ -46,7 +46,10 @@ func (s *roleService) List(ctx context.Context) ([]*model.Role, error) {
 	var err error
 	var out []*model.Role
 
-	if err = s.db.Model(&model.Role{}).Order("`id` DESC").Find(&out).Error; nil != err {
+	if err = s.db.Preload("Permissions.Actions.Resources").
+		Model(&model.Role{}).
+		Order("`id` DESC").
+		Find(&out).Error; nil != err {
 	}
 
 	return out, err

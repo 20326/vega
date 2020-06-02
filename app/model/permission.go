@@ -15,7 +15,7 @@ type (
 		Describe     string   `gorm:"size:256" json:"describe"`
 		Icon         string   `gorm:"size:64" json:"icon"`
 		Path         string   `gorm:"size:256" json:"path"`
-		Actions      []Action `gorm:"many2many:permission_action;" json:"actions"`
+		Actions      []Action `gorm:"many2many:permission_actions;" json:"actions"`
 		DefaultCheck bool     `gorm:"default:false" json:"defaultCheck"`
 		Status       int      `gorm:"default:1" json:"status"`
 		Deleted      int      `gorm:"default:0" json:"deleted"`

@@ -11,7 +11,7 @@ type (
 		// ActionID  string     `gorm:"size:64" json:"actionID"` // TODO
 		Name      string     `gorm:"size:256" json:"name"`
 		Describe  string     `gorm:"size:256" json:"describe"`
-		Resources []Resource `gorm:"many2many:action_resource;" json:"resources"`
+		Resources []*Resource `gorm:"many2many:action_resources;" json:"resources"`
 	}
 
 	// ActionService defines operations for working with system actions.

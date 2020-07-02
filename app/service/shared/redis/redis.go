@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/go-redis/redis"
-	"github.com/phuslu/log"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -24,7 +24,7 @@ func New(config *Config) *ClientPool {
 	// get default client
 	client := GetClient(DefaultPoolName)
 	if nil == client {
-		log.Fatal().Msg("new redis client failed")
+		logrus.Fatalf("new redis client failed")
 	}
 
 	return &ClientPool{
@@ -46,13 +46,13 @@ func (srv *ClientPool) NewClient() (*redis.Client, error) {
 		err = errors.New("new redis client failed")
 	}
 
-	pong, err := client.Ping().Result()
+	_, err = client.Ping().Result()
 	if err != nil {
-		log.Fatal().Msg("ping redis failed")
+		logrus.Fatalf("ping redis failed" + err.Error())
 		return nil, err
 	}
 
-	log.Info().Str("client", client.String()).Msg("ping: " + pong)
+	logrus.WithError(err).WithField("client", client.String()).Printf("ping: " + pong)
 	return client, err
 }
 
@@ -72,7 +72,7 @@ func (srv *ClientPool) GetClient(key string) *redis.Client {
 	if _, ok := srv.pools[key]; !ok {
 		srv.pools[key], err = srv.NewClient()
 		if nil != err {
-			log.Error().Err(err).Msg("new redis client failed")
+			logrus.WithError(err).Printf("new redis client failed")
 			return nil
 		}
 	}

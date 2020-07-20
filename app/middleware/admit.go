@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-var ignoredPerms = map[string]bool{}
+var ignoredPerms = map[string]bool{
+	"/api/user/login": true,
+}
 
 func AdmitMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -30,7 +32,12 @@ func AdmitMiddleware() gin.HandlerFunc {
 
 		session := &model.SessionData{}
 		user, _ := session.Get(c, srv.Users)
+		if nil != user && user.Username == "admin" {
+			c.Next()
+			return
+		}
 
+		log.Warn("\n", method, user, path)
 		allowed, _ := srv.Admissions.Admit(c, user, path, method)
 		log.Warn("\n", method, path, allowed)
 		if !allowed {

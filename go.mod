@@ -14,7 +14,6 @@ require (
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/jinzhu/gorm v1.9.12
 	github.com/onsi/ginkgo v1.12.2 // indirect
-	github.com/phuslu/log v1.0.13
 	github.com/prometheus/client_golang v0.9.3
 	github.com/satori/go.uuid v1.2.0
 	github.com/segmentio/ksuid v1.0.2

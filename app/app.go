@@ -79,7 +79,9 @@ func StartHttpServer(configPath string, pidFile string) {
 
 	r.Use(middleware.LoggerWithRequestID(log))
 	r.Use(middleware.Cors())
-	r.Use(middleware.AdmitMiddleware())
+	// r.Use(middleware.AdmitMiddleware())
+	console := r.Group("/api/console")
+	console.Use(middleware.AdmitMiddleware())
 
 	log.Info("init service")
 	// use middleware

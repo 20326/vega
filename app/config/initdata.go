@@ -30,11 +30,20 @@ type Permission struct {
 	Deleted      int
 }
 
+
+type User struct {
+	ID       string
+	Username string
+	Nickname string
+	Password string
+}
+
 type Role struct {
-	ID           string
-	Name         string
-	Label        string
-	Describe     string
+	ID       string
+	Name     string
+	Label    string
+	Describe string
+	Users	 []User
 }
 
 type InitData struct {

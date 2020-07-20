@@ -126,6 +126,8 @@ func LoginAction(c *gin.Context) {
 		Anonymous: false,
 	}
 
+	log.Warn("\nLoginAction ", session, user)
+
 	if err := session.Save(c); nil != err {
 		result.Error(errors.New("internal error of login"))
 		render.JSON(c.Writer, result, http.StatusInternalServerError)

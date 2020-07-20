@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"github.com/20326/vega/pkg/crypto"
 
 	"github.com/20326/vega/app/config"
 	"github.com/20326/vega/app/model"
@@ -53,6 +54,26 @@ func initData(srv *service.Service, data *config.InitData) {
 	permID := uint64(1)
 	actionID := uint64(1)
 	resID := uint64(1)
+
+	for _, roleItem := range data.Roles {
+		role := &model.Role{
+			Name:     roleItem.Name,
+			Label:    roleItem.Label,
+			Describe: roleItem.Describe,
+		}
+		if nil != roleItem.Users {
+			for _, userItem := range roleItem.Users {
+				user := &model.User{
+					Username:     userItem.Username,
+					Nickname:     userItem.Nickname,
+					PasswordHash: crypto.HashAndSalt([]byte(userItem.Password)),
+				}
+				user.Roles = append(user.Roles, role)
+				_ = srv.Users.Create(ctx, user)
+			}
+		}
+		_ = srv.Roles.Create(ctx, role)
+	}
 
 	for _, permItem := range data.Permissions {
 		perm := &model.Permission{

@@ -2,6 +2,20 @@
 #                   Vega init data                            #
 ###############################################################
 # dashboard
+Roles:
+  - Name: admin
+    Label: 超级管理员
+    Describe: 超级管理员
+    Users:
+      - Username: admin
+        Nickname: admin
+        Password: adminadmin
+        Describe: 超级管理员
+
+  - Name: user
+    Label: 用户
+    Describe: 用户
+
 Permissions:
   -
     Name: dashboard

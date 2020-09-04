@@ -30,6 +30,12 @@ $ git clone https://github.com/20326/vega-console
 
 https://github.com/20326/vega/releases
 
+## Demo site
+
+http://vega.run:8000 
+user: admin
+pass: adminadmin
+
 ## License
 
 © 2020 [Brian Chow](https://vega.run)
